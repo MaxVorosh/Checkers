@@ -9,6 +9,8 @@ public partial class CheckersWindow : Window
 {
     private Mode _gameMode;
     private Difficult _gameDifficult;
+    private Gameplay _gameplay;
+    //private Image[,] sprites;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
@@ -44,10 +46,12 @@ public partial class CheckersWindow : Window
         }
     }*/
     
-    public CheckersWindow(Mode mode, Difficult difficult)
+    public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay)
     {
         _gameMode = mode;
         _gameDifficult = difficult;
+        _gameplay = gameplay;
+        //sprites = new Image[8, 8];
         InitializeComponent();
         //SetGrid();
     }

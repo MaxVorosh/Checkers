@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkers"
         mc:Ignorable="d"
-        Title="Checkers" Height="200" Width="300">
+        Title="Checkers" Height="200" Width="400">
     <Grid x:Name="MainGrid" Background="Azure">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -17,14 +17,19 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Grid.Row="1" Grid.Column="1" Content="Start" FontSize="22" Width="75" Height = "50" Click="ButtonClick"/>
-        <StackPanel Grid.Row="0" Grid.Column="2" x:Name="DifficultStackPanel">
-            <RadioButton GroupName="Difficult" Content="Easy" Checked="RadioButtonChecked" />
+        <StackPanel Grid.Row="0" Grid.Column="1" x:Name="DifficultStackPanel">
+            <RadioButton GroupName="Difficult" Content="Easy" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Difficult" Content="Medium" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Difficult" Content="Hard" Checked="RadioButtonChecked" />
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="0" x:Name="ModeStackPanel">
             <RadioButton GroupName="Mode" Content="1 player" IsChecked="True" Checked="RadioButtonChecked"/>
             <RadioButton GroupName="Mode" Content="2 players" Checked="RadioButtonChecked" />
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="2" x:Name="GameplayPanel">
+            <RadioButton GroupName="Gameplay" Content="Руссские" IsChecked="True" Checked="RadioButtonChecked"/>
+            <RadioButton GroupName="Gameplay" Content="Поддавки" Checked="RadioButtonChecked" />
+            <RadioButton GroupName="Gameplay" Content="Международные" Checked="RadioButtonChecked" />
         </StackPanel>
     </Grid>
 </Window>

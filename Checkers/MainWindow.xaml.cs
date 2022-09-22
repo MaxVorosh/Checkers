@@ -23,6 +23,7 @@ namespace Checkers
     {
         private Mode SelectedMode;
         private Difficult SelectedDifficult;
+        private Gameplay selectedGameplay;
 
         public MainWindow()
         {
@@ -31,7 +32,7 @@ namespace Checkers
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            CheckersWindow checkersWindow = new CheckersWindow(SelectedMode, SelectedDifficult);
+            CheckersWindow checkersWindow = new CheckersWindow(SelectedMode, SelectedDifficult, selectedGameplay);
             checkersWindow.Show();
             this.Close();
         }
@@ -39,6 +40,22 @@ namespace Checkers
         private void ChangeDifficult(string newDifficult)
         {
             SelectedDifficult = (Difficult)Enum.Parse(typeof(Difficult), newDifficult);
+        }
+
+        private void ChangeGameplay(string newGameplay)
+        {
+            if (newGameplay == "Русские")
+            {
+                selectedGameplay = Gameplay.Russian;
+            }
+            else if (newGameplay == "Поддавки")
+            {
+                selectedGameplay = Gameplay.Giveaway;
+            }
+            else
+            {
+                selectedGameplay = Gameplay.International;
+            }
         }
 
         private void ChangeMode(string newMode)
@@ -61,6 +78,10 @@ namespace Checkers
             if (pressed.GroupName == "Difficult")
             {
                 ChangeDifficult(pressed.Content.ToString());
+            }
+            else if (pressed.GroupName == "Gameplay")
+            {
+                ChangeGameplay(pressed.Content.ToString());
             }
             else
             {
