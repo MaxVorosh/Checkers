@@ -34,10 +34,10 @@ public class Board
             {
                 for (int j = 0; j < _size; ++j)
                 {
-                    if ((i + j) % 2 == 0)
+                    if ((i + j) % 2 == 1)
                     {
-                        checkers[i, j] = new Checker(true, false, true);
-                        checkers[_size - i - 1, _size - j - 1] = new Checker(false, false, true);
+                        checkers[i, j] = new Checker(false, false, true);
+                        checkers[_size - i - 1, _size - j - 1] = new Checker(true, false, true);
                     }
                 }
             }

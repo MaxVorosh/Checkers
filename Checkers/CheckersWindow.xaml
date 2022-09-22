@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="The result will be here" HorizontalAlignment="Center" VerticalAlignment="Center" />
         <Border Grid.Row="1" MouseDown="BoardClick" HorizontalAlignment="Center" VerticalAlignment="Top"
-                BorderBrush="Black" BorderThickness="2" Background="#eeeed2" x:Name="BoardBorder">
+                BorderBrush="Black" BorderThickness="2" Background="#769656" x:Name="BoardBorder">
         <Grid x:Name="Board">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />
@@ -38,41 +38,41 @@
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Column="0" Grid.Row="0" Background="#769656" />
-            <Border Grid.Column="0" Grid.Row="2" Background="#769656" />
-            <Border Grid.Column="0" Grid.Row="4" Background="#769656" />
-            <Border Grid.Column="0" Grid.Row="6" Background="#769656" />
-            <Border Grid.Column="1" Grid.Row="1" Background="#769656" />
-            <Border Grid.Column="1" Grid.Row="3" Background="#769656" />
-            <Border Grid.Column="1" Grid.Row="5" Background="#769656" />
-            <Border Grid.Column="1" Grid.Row="7" Background="#769656" />
+            <Border Grid.Column="0" Grid.Row="0" Background="#eeeed2" />
+            <Border Grid.Column="0" Grid.Row="2" Background="#eeeed2" />
+            <Border Grid.Column="0" Grid.Row="4" Background="#eeeed2" />
+            <Border Grid.Column="0" Grid.Row="6" Background="#eeeed2" />
+            <Border Grid.Column="1" Grid.Row="1" Background="#eeeed2" />
+            <Border Grid.Column="1" Grid.Row="3" Background="#eeeed2" />
+            <Border Grid.Column="1" Grid.Row="5" Background="#eeeed2" />
+            <Border Grid.Column="1" Grid.Row="7" Background="#eeeed2" />
             
-            <Border Grid.Column="2" Grid.Row="0" Background="#769656" />
-            <Border Grid.Column="2" Grid.Row="2" Background="#769656" />
-            <Border Grid.Column="2" Grid.Row="4" Background="#769656" />
-            <Border Grid.Column="2" Grid.Row="6" Background="#769656" />
-            <Border Grid.Column="3" Grid.Row="1" Background="#769656" />
-            <Border Grid.Column="3" Grid.Row="3" Background="#769656" />
-            <Border Grid.Column="3" Grid.Row="5" Background="#769656" />
-            <Border Grid.Column="3" Grid.Row="7" Background="#769656" />
+            <Border Grid.Column="2" Grid.Row="0" Background="#eeeed2" />
+            <Border Grid.Column="2" Grid.Row="2" Background="#eeeed2" />
+            <Border Grid.Column="2" Grid.Row="4" Background="#eeeed2" />
+            <Border Grid.Column="2" Grid.Row="6" Background="#eeeed2" />
+            <Border Grid.Column="3" Grid.Row="1" Background="#eeeed2" />
+            <Border Grid.Column="3" Grid.Row="3" Background="#eeeed2" />
+            <Border Grid.Column="3" Grid.Row="5" Background="#eeeed2" />
+            <Border Grid.Column="3" Grid.Row="7" Background="#eeeed2" />
             
-            <Border Grid.Column="4" Grid.Row="0" Background="#769656" />
-            <Border Grid.Column="4" Grid.Row="2" Background="#769656" />
-            <Border Grid.Column="4" Grid.Row="4" Background="#769656" />
-            <Border Grid.Column="4" Grid.Row="6" Background="#769656" />
-            <Border Grid.Column="5" Grid.Row="1" Background="#769656" />
-            <Border Grid.Column="5" Grid.Row="3" Background="#769656" />
-            <Border Grid.Column="5" Grid.Row="5" Background="#769656" />
-            <Border Grid.Column="5" Grid.Row="7" Background="#769656" />
+            <Border Grid.Column="4" Grid.Row="0" Background="#eeeed2" />
+            <Border Grid.Column="4" Grid.Row="2" Background="#eeeed2" />
+            <Border Grid.Column="4" Grid.Row="4" Background="#eeeed2" />
+            <Border Grid.Column="4" Grid.Row="6" Background="#eeeed2" />
+            <Border Grid.Column="5" Grid.Row="1" Background="#eeeed2" />
+            <Border Grid.Column="5" Grid.Row="3" Background="#eeeed2" />
+            <Border Grid.Column="5" Grid.Row="5" Background="#eeeed2" />
+            <Border Grid.Column="5" Grid.Row="7" Background="#eeeed2" />
             
-            <Border Grid.Column="6" Grid.Row="0" Background="#769656" />
-            <Border Grid.Column="6" Grid.Row="2" Background="#769656" />
-            <Border Grid.Column="6" Grid.Row="4" Background="#769656" />
-            <Border Grid.Column="6" Grid.Row="6" Background="#769656" />
-            <Border Grid.Column="7" Grid.Row="1" Background="#769656" />
-            <Border Grid.Column="7" Grid.Row="3" Background="#769656" />
-            <Border Grid.Column="7" Grid.Row="5" Background="#769656" />
-            <Border Grid.Column="7" Grid.Row="7" Background="#769656" />
+            <Border Grid.Column="6" Grid.Row="0" Background="#eeeed2" />
+            <Border Grid.Column="6" Grid.Row="2" Background="#eeeed2" />
+            <Border Grid.Column="6" Grid.Row="4" Background="#eeeed2" />
+            <Border Grid.Column="6" Grid.Row="6" Background="#eeeed2" />
+            <Border Grid.Column="7" Grid.Row="1" Background="#eeeed2" />
+            <Border Grid.Column="7" Grid.Row="3" Background="#eeeed2" />
+            <Border Grid.Column="7" Grid.Row="5" Background="#eeeed2" />
+            <Border Grid.Column="7" Grid.Row="7" Background="#eeeed2" />
         </Grid>
     </Border>
     </Grid>

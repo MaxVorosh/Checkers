@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace Checkers;
 
@@ -11,7 +13,7 @@ public partial class CheckersWindow : Window
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;
-    private Image[,] _sprites;
+    private Ellipse[,] _sprites;
     private CheckersBoard _board;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
@@ -25,6 +27,40 @@ public partial class CheckersWindow : Window
             return;
         }
         _board.NewCoords(x, y);
+        UpdateSprites();
+    }
+
+    public void AddSprite(int x, int y, bool isWhite, bool isMissis)
+    {
+        var checker = new Ellipse();
+        checker.Width = 40;
+        checker.Height = 40;
+        checker.Fill = (isWhite) ? Brushes.White : Brushes.Black;
+        _sprites[x, y] = checker;
+        Board.Children.Add(checker);
+        Grid.SetRow(checker, x);
+        Grid.SetColumn(checker, y);
+    }
+
+    public void DeleteSprite(int x, int y)
+    {
+        Board.Children.Remove(_sprites[x, y]);
+    }
+
+    public void UpdateSprites()
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            for (int j = 0; j < 8; ++j)
+            {
+                DeleteSprite(i, j);
+                var checker = _board.GetChecker(new Tuple<int, int>(i, j));
+                if (checker.IsExists())
+                {
+                    AddSprite(i, j, checker.IsWhite(), checker.IsMissis());
+                }
+            }
+        }
     }
 
     /*private void SetGrid()
@@ -59,9 +95,10 @@ public partial class CheckersWindow : Window
         _gameMode = mode;
         _gameDifficult = difficult;
         _gameplay = gameplay;
-        _sprites = new Image[8, 8];
+        _sprites = new Ellipse[8, 8];
         _board = new CheckersBoard(8, 12);
         InitializeComponent();
+        UpdateSprites();
         //SetGrid();
     }
 }

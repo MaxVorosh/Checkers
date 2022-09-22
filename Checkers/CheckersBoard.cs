@@ -292,6 +292,11 @@ public class CheckersBoard
         NewTile(board.GetTile(coordX, coordY));
     }
 
+    public Checker GetChecker(Tuple<int, int> tile)
+    {
+        return board.GetChecker(tile);
+    }
+
     /*public void Print()
     {
         board.Print();
