@@ -17,6 +17,7 @@ public class Board
             _size = size;
             _cntCheckersForOne = cnt;
             checkers = new Checker[_size, _size];
+            tileSize = 50;
             for (int i = 0; i < _size; ++i)
             {
                 for (int j = 0; j < _size; ++j)

@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,13 +11,20 @@ public partial class CheckersWindow : Window
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;
-    //private Image[,] sprites;
+    private Image[,] _sprites;
+    private CheckersBoard _board;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
         Point p = e.GetPosition(this);
         p = GameWindow.TranslatePoint(p, BoardBorder);
-        MessageBox.Show("Координата x=" +p.X.ToString()+ " y="+p.Y.ToString());
+        int x = Convert.ToInt32(p.X - 2);
+        int y = Convert.ToInt32(p.Y - 2);
+        if (x < 0 || y < 0 || x > 400 || y > 400)
+        {
+            return;
+        }
+        _board.NewCoords(x, y);
     }
 
     /*private void SetGrid()
@@ -51,7 +59,8 @@ public partial class CheckersWindow : Window
         _gameMode = mode;
         _gameDifficult = difficult;
         _gameplay = gameplay;
-        //sprites = new Image[8, 8];
+        _sprites = new Image[8, 8];
+        _board = new CheckersBoard(8, 12);
         InitializeComponent();
         //SetGrid();
     }

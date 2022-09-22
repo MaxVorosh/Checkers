@@ -286,6 +286,12 @@ public class CheckersBoard
         }
     }
 
+    public void NewCoords(int coordX, int coordY)
+    {
+        // Good coords
+        NewTile(board.GetTile(coordX, coordY));
+    }
+
     /*public void Print()
     {
         board.Print();
