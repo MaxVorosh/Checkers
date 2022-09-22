@@ -87,8 +87,8 @@ public class CheckersBoard
                 return false;
             }
 
-            if ((currentChecker.IsWhite() && tileTo.Item1 > tileFrom.Item1) ||
-                (!currentChecker.IsWhite() && tileTo.Item1 < tileFrom.Item1))
+            if ((currentChecker.IsWhite() && tileTo.Item1 < tileFrom.Item1) ||
+                (!currentChecker.IsWhite() && tileTo.Item1 > tileFrom.Item1))
             {
                 return !board.GetChecker(tileTo).IsExists();
             }

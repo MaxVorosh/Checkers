@@ -26,7 +26,7 @@ public partial class CheckersWindow : Window
         {
             return;
         }
-        _board.NewCoords(x, y);
+        _board.NewCoords(y, x);
         UpdateSprites();
     }
 
