@@ -5,14 +5,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Checkers"
         mc:Ignorable="d"
-        Title="CheckersWindow" Height="500" Width="500">
+        Title="CheckersWindow" Height="500" Width="500"
+        x:Name="GameWindow">
     <Grid Background="Azure">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.9*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="The result will be here" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <Border Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Top"  BorderBrush="Black" BorderThickness="2" Background="#eeeed2">
+        <Border Grid.Row="1" MouseDown="BoardClick" HorizontalAlignment="Center" VerticalAlignment="Top"
+                BorderBrush="Black" BorderThickness="2" Background="#eeeed2" x:Name="BoardBorder">
         <Grid x:Name="Board">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />

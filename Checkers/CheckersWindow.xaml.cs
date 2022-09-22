@@ -1,14 +1,22 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Checkers;
 
 public partial class CheckersWindow : Window
 {
-    private Mode GameMode { get; init; }
-    private Difficult GameDifficult { get; init; }
-    
+    private Mode _gameMode;
+    private Difficult _gameDifficult;
+
+    private void BoardClick(object sender, MouseButtonEventArgs e)
+    {
+        Point p = e.GetPosition(this);
+        p = GameWindow.TranslatePoint(p, BoardBorder);
+        MessageBox.Show("Координата x=" +p.X.ToString()+ " y="+p.Y.ToString());
+    }
+
     /*private void SetGrid()
     {
         for (int i = 0; i < 8; ++i)
@@ -38,8 +46,8 @@ public partial class CheckersWindow : Window
     
     public CheckersWindow(Mode mode, Difficult difficult)
     {
-        GameMode = mode;
-        GameDifficult = difficult;
+        _gameMode = mode;
+        _gameDifficult = difficult;
         InitializeComponent();
         //SetGrid();
     }
