@@ -13,7 +13,7 @@ public partial class CheckersWindow : Window
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;
-    private Ellipse[,] _sprites;
+    private CheckerSprite?[,] _sprites;
     private CheckersBoard _board;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
@@ -32,19 +32,20 @@ public partial class CheckersWindow : Window
 
     public void AddSprite(int x, int y, bool isWhite, bool isMissis)
     {
-        var checker = new Ellipse();
-        checker.Width = 40;
-        checker.Height = 40;
-        checker.Fill = (isWhite) ? Brushes.White : Brushes.Black;
+        var checker = new CheckerSprite(isWhite, isMissis);
         _sprites[x, y] = checker;
-        Board.Children.Add(checker);
-        Grid.SetRow(checker, x);
-        Grid.SetColumn(checker, y);
+        Board.Children.Add(checker.MainShape);
+        Grid.SetRow(checker.MainShape, x);
+        Grid.SetColumn(checker.MainShape, y);
+        Board.Children.Add(checker.MissisShape);
+        Grid.SetRow(checker.MissisShape, x);
+        Grid.SetColumn(checker.MissisShape, y);
     }
 
     public void DeleteSprite(int x, int y)
     {
-        Board.Children.Remove(_sprites[x, y]);
+        Board.Children.Remove(_sprites[x, y].MainShape);
+        Board.Children.Remove(_sprites[x, y].MissisShape);
     }
 
     public void UpdateSprites()
@@ -53,7 +54,10 @@ public partial class CheckersWindow : Window
         {
             for (int j = 0; j < 8; ++j)
             {
-                DeleteSprite(i, j);
+                if (_sprites[i, j] != null)
+                {
+                    DeleteSprite(i, j);
+                }
                 var checker = _board.GetChecker(new Tuple<int, int>(i, j));
                 if (checker.IsExists())
                 {
@@ -95,7 +99,7 @@ public partial class CheckersWindow : Window
         _gameMode = mode;
         _gameDifficult = difficult;
         _gameplay = gameplay;
-        _sprites = new Ellipse[8, 8];
+        _sprites = new CheckerSprite[8, 8];
         _board = new CheckersBoard(8, 12);
         InitializeComponent();
         UpdateSprites();
