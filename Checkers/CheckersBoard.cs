@@ -224,8 +224,11 @@ public class CheckersBoard
         }
 
         isMoveStarted = true;
-        bool shouldCheckCaptures = CanCaptureColor(tileTo);
-        if (board.GetChecker(_currentTile).IsMissis())
+        bool isCaptured = CanCaptureTile(_currentTile, tileTo);
+        board.MoveChecker(_currentTile, tileTo);
+        bool shouldCheckCaptures = CanCaptureColor(tileTo) && isCaptured;
+        board.MoveChecker(tileTo, _currentTile);
+        if (board.GetChecker(_currentTile).IsMissis() && (!isCaptured))
         {
             rule15++;
         }
