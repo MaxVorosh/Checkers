@@ -28,6 +28,7 @@ public partial class CheckersWindow : Window
         }
         _board.NewCoords(y, x);
         UpdateSprites();
+        Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
     }
 
     public void AddSprite(int x, int y, bool isWhite, bool isMissis)
@@ -103,6 +104,7 @@ public partial class CheckersWindow : Window
         _board = new CheckersBoard(8, 12);
         InitializeComponent();
         UpdateSprites();
+        Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
         //SetGrid();
     }
 }

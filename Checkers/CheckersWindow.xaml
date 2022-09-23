@@ -12,7 +12,8 @@
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.9*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="The result will be here" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock Grid.Row="0" Text="The result will be here" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   x:Name="Indicator" />
         <Border Grid.Row="1" MouseDown="BoardClick" HorizontalAlignment="Center" VerticalAlignment="Top"
                 BorderBrush="Black" BorderThickness="2" Background="#769656" x:Name="BoardBorder">
         <Grid x:Name="Board">
