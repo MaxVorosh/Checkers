@@ -131,7 +131,8 @@ public class CheckersBoard
             board.DeleteChecker(currentTile);
         }
 
-        if (tileTo.Item1 == 0 || tileTo.Item1 == _size - 1)
+        if ((tileTo.Item1 == 0 && board.GetChecker(tileTo).IsWhite())
+            || (tileTo.Item1 == _size - 1 && !board.GetChecker(tileTo).IsWhite()))
         {
             board.GetChecker(tileTo).BecomeMisis();
         }
