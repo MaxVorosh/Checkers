@@ -5,26 +5,26 @@ namespace Checkers;
 public class CheckersBoard
 {
     private int _size;
-    private bool isWhiteTurn;
-    private int rule15;
-    private Board board;
+    private bool _isWhiteTurn;
+    private int _rule15;
+    private Board _board;
     private Tuple<int, int> _currentTile;
-    private bool isMoveStarted;
-    private Result result;
+    private bool _isMoveStarted;
+    private Result _result;
     private int _whiteCheckers;
     private int _blackCheckers;
 
     public CheckersBoard(int size, int cnt)
     {
         _size = size;
-        isWhiteTurn = true;
-        rule15 = 0;
-        board = new Board(size, cnt);
+        _isWhiteTurn = true;
+        _rule15 = 0;
+        _board = new Board(size, cnt);
         _currentTile = new Tuple<int, int>(-1, -1);
-        isMoveStarted = false;
+        _isMoveStarted = false;
         _whiteCheckers = cnt;
         _blackCheckers = cnt;
-        result = Result.NotEnd;
+        _result = Result.NotEnd;
     }
 
     Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
@@ -37,12 +37,12 @@ public class CheckersBoard
     public bool CanMove(Tuple<int, int> tileFrom, Tuple<int, int> tileTo, bool mustCapture)
     {
         if (Math.Abs(tileFrom.Item1 - tileTo.Item1) != Math.Abs(tileFrom.Item2 - tileTo.Item2) ||
-            tileFrom.Item1 == tileTo.Item1 || board.GetChecker(tileTo).IsExists())
+            tileFrom.Item1 == tileTo.Item1 || _board.GetChecker(tileTo).IsExists())
         {
             return false;
         }
 
-        var currentChecker = board.GetChecker(tileFrom);
+        var currentChecker = _board.GetChecker(tileFrom);
         int length = Math.Abs(tileFrom.Item1 - tileTo.Item1);
 
         if (currentChecker.IsMissis())
@@ -56,9 +56,9 @@ public class CheckersBoard
                 int currentX = tileFrom.Item1 + i * xMultiplier;
                 int currentY = tileFrom.Item2 + i * yMultiplier;
                 var currentTile = new Tuple<int, int>(currentX, currentY);
-                if (board.GetChecker(currentTile).IsExists())
+                if (_board.GetChecker(currentTile).IsExists())
                 {
-                    if (board.GetChecker(currentTile).IsWhite() == currentChecker.IsWhite())
+                    if (_board.GetChecker(currentTile).IsWhite() == currentChecker.IsWhite())
                     {
                         return false;
                     }
@@ -90,7 +90,7 @@ public class CheckersBoard
             if ((currentChecker.IsWhite() && tileTo.Item1 < tileFrom.Item1) ||
                 (!currentChecker.IsWhite() && tileTo.Item1 > tileFrom.Item1))
             {
-                return !board.GetChecker(tileTo).IsExists();
+                return !_board.GetChecker(tileTo).IsExists();
             }
 
             return false;
@@ -98,8 +98,8 @@ public class CheckersBoard
 
         var middleTile = new Tuple<int, int>((tileFrom.Item1 + tileTo.Item1) / 2,
             (tileFrom.Item2 + tileTo.Item2) / 2);
-        return (board.GetChecker(middleTile).IsExists() &&
-                board.GetChecker(middleTile).IsWhite() != currentChecker.IsWhite());
+        return (_board.GetChecker(middleTile).IsExists() &&
+                _board.GetChecker(middleTile).IsWhite() != currentChecker.IsWhite());
     }
 
     public void Move(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
@@ -109,7 +109,7 @@ public class CheckersBoard
             return;
         }
 
-        board.MoveChecker(tileFrom, tileTo);
+        _board.MoveChecker(tileFrom, tileTo);
         var multipliers = GetMultipliers(tileFrom, tileTo);
         int xMultiplier = multipliers.Item1;
         int yMultiplier = multipliers.Item2;
@@ -119,22 +119,22 @@ public class CheckersBoard
             int currentX = tileFrom.Item1 + i * xMultiplier;
             int currentY = tileFrom.Item2 + i * yMultiplier;
             var currentTile = new Tuple<int, int>(currentX, currentY);
-            if (board.GetChecker(currentTile).IsExists() && board.GetChecker(currentTile).IsWhite())
+            if (_board.GetChecker(currentTile).IsExists() && _board.GetChecker(currentTile).IsWhite())
             {
                 _whiteCheckers--;
             }
-            else if (board.GetChecker(currentTile).IsExists())
+            else if (_board.GetChecker(currentTile).IsExists())
             {
                 _blackCheckers--;
             }
 
-            board.DeleteChecker(currentTile);
+            _board.DeleteChecker(currentTile);
         }
 
-        if ((tileTo.Item1 == 0 && board.GetChecker(tileTo).IsWhite())
-            || (tileTo.Item1 == _size - 1 && !board.GetChecker(tileTo).IsWhite()))
+        if ((tileTo.Item1 == 0 && _board.GetChecker(tileTo).IsWhite())
+            || (tileTo.Item1 == _size - 1 && !_board.GetChecker(tileTo).IsWhite()))
         {
-            board.GetChecker(tileTo).BecomeMisis();
+            _board.GetChecker(tileTo).BecomeMisis();
         }
     }
 
@@ -153,7 +153,7 @@ public class CheckersBoard
         {
             int currentX = tileFrom.Item1 + xMultiplier * i;
             int currentY = tileFrom.Item2 + yMultiplier * i;
-            if (board.GetChecker(new Tuple<int, int>(currentX, currentY)).IsExists())
+            if (_board.GetChecker(new Tuple<int, int>(currentX, currentY)).IsExists())
             {
                 return true;
             }
@@ -199,7 +199,7 @@ public class CheckersBoard
         {
             for (int j = 0; j < _size; ++j)
             {
-                Checker currentChecker = board.GetChecker(new Tuple<int, int>(i, j));
+                Checker currentChecker = _board.GetChecker(new Tuple<int, int>(i, j));
                 if (currentChecker.IsExists() && currentChecker.IsWhite() == color &&
                     CanCaptureColor(new Tuple<int, int>(i, j)))
                 {
@@ -213,10 +213,10 @@ public class CheckersBoard
 
     public void Turn(Tuple<int, int> tileTo)
     {
-        if (!CanMove(_currentTile, tileTo, CanCaptureSmth(isWhiteTurn)))
+        if (!CanMove(_currentTile, tileTo, CanCaptureSmth(_isWhiteTurn)))
         {
             //Console.WriteLine("Can't move");
-            if (!isMoveStarted)
+            if (!_isMoveStarted)
             {
                 RejectCurrentTile();
             }
@@ -224,18 +224,18 @@ public class CheckersBoard
             return;
         }
 
-        isMoveStarted = true;
+        _isMoveStarted = true;
         bool isCaptured = CanCaptureTile(_currentTile, tileTo);
-        board.MoveChecker(_currentTile, tileTo);
+        _board.MoveChecker(_currentTile, tileTo);
         bool shouldCheckCaptures = CanCaptureColor(tileTo) && isCaptured;
-        board.MoveChecker(tileTo, _currentTile);
-        if (board.GetChecker(_currentTile).IsMissis() && (!isCaptured))
+        _board.MoveChecker(tileTo, _currentTile);
+        if (_board.GetChecker(_currentTile).IsMissis() && (!isCaptured))
         {
-            rule15++;
+            _rule15++;
         }
         else
         {
-            rule15 = 0;
+            _rule15 = 0;
         }
 
         //Console.WriteLine("Get to move");
@@ -257,19 +257,19 @@ public class CheckersBoard
         }
 
         RejectCurrentTile();
-        isMoveStarted = false;
-        isWhiteTurn = !isWhiteTurn;
-        if (rule15 == 30)
+        _isMoveStarted = false;
+        _isWhiteTurn = !_isWhiteTurn;
+        if (_rule15 == 30)
         {
-            result = Result.Draw;
+            _result = Result.Draw;
         }
         else if (_whiteCheckers == 0)
         {
-            result = Result.BlackWin;
+            _result = Result.BlackWin;
         }
         else if (_blackCheckers == 0)
         {
-            result = Result.WhiteWin;
+            _result = Result.WhiteWin;
         }
         //If someone can't move, he lose. Check it 
     }
@@ -279,7 +279,7 @@ public class CheckersBoard
         if (_currentTile.Equals(new Tuple<int, int>(-1, -1)))
         {
             //Console.WriteLine(Convert.ToString(isWhiteTurn == board.GetChecker(tile).IsWhite()));
-            if (isWhiteTurn == board.GetChecker(tile).IsWhite() && board.GetChecker(tile).IsExists())
+            if (_isWhiteTurn == _board.GetChecker(tile).IsWhite() && _board.GetChecker(tile).IsExists())
             {
                 _currentTile = tile;
             }
@@ -293,17 +293,17 @@ public class CheckersBoard
     public void NewCoords(int coordX, int coordY)
     {
         // Good coords
-        NewTile(board.GetTile(coordX, coordY));
+        NewTile(_board.GetTile(coordX, coordY));
     }
 
     public Checker GetChecker(Tuple<int, int> tile)
     {
-        return board.GetChecker(tile);
+        return _board.GetChecker(tile);
     }
 
-    public bool IsWhiteTurn => isWhiteTurn;
+    public bool IsWhiteTurn => _isWhiteTurn;
 
-    public Result GetResult => result;
+    public Result GetResult => _result;
 
     /*public void Print()
     {

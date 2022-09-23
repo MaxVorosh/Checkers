@@ -6,23 +6,21 @@ namespace Checkers;
 public class Board
 {
     private int _size;
-    private int tileSize;
-    private int xBoard;
-    private int yBoard;
-    private Checker[,] checkers;
+    private int _tileSize;
+    private Checker[,] _checkers;
     private int _cntCheckersForOne;
 
     public Board(int size, int cnt)
     {
         _size = size;
         _cntCheckersForOne = cnt;
-        checkers = new Checker[_size, _size];
-        tileSize = 50;
+        _checkers = new Checker[_size, _size];
+        _tileSize = 50;
         for (int i = 0; i < _size; ++i)
         {
             for (int j = 0; j < _size; ++j)
             {
-                checkers[i, j] = new Checker(true, false, false);
+                _checkers[i, j] = new Checker(true, false);
             }
         }
 
@@ -37,8 +35,8 @@ public class Board
             {
                 if ((i + j) % 2 == 1)
                 {
-                    checkers[i, j] = new Checker(false, false, true);
-                    checkers[_size - i - 1, _size - j - 1] = new Checker(true, false, true);
+                    _checkers[i, j] = new Checker(false, false, true);
+                    _checkers[_size - i - 1, _size - j - 1] = new Checker(true, false, true);
                 }
             }
         }
@@ -46,23 +44,23 @@ public class Board
 
     public Tuple<int, int> GetTile(int xMouse, int yMouse)
     {
-        return new Tuple<int, int>((xMouse - xBoard) / tileSize, (yMouse - yBoard) / tileSize);
+        return new Tuple<int, int>(xMouse / _tileSize, yMouse / _tileSize);
     }
 
     public Checker GetChecker(Tuple<int, int> tile)
     {
-        return checkers[tile.Item1, tile.Item2];
+        return _checkers[tile.Item1, tile.Item2];
     }
 
     public void DeleteChecker(Tuple<int, int> tile)
     {
-        checkers[tile.Item1, tile.Item2].Delete();
+        _checkers[tile.Item1, tile.Item2].Delete();
     }
 
     public void MoveChecker(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
     {
-        checkers[tileTo.Item1, tileTo.Item2] = checkers[tileFrom.Item1, tileFrom.Item2].Copy();
-        checkers[tileFrom.Item1, tileFrom.Item2].Delete();
+        _checkers[tileTo.Item1, tileTo.Item2] = _checkers[tileFrom.Item1, tileFrom.Item2].Copy();
+        _checkers[tileFrom.Item1, tileFrom.Item2].Delete();
     }
 
     /*public void Print()

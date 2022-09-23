@@ -15,11 +15,11 @@ public partial class CheckersWindow : Window
     private Gameplay _gameplay;
     private CheckerSprite?[,] _sprites;
     private CheckersBoard _board;
-    private bool gameEnd;
+    private bool _gameEnd;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
-        if (gameEnd)
+        if (_gameEnd)
         {
             return;
         }
@@ -37,7 +37,7 @@ public partial class CheckersWindow : Window
         Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
         if (_board.GetResult != Result.NotEnd)
         {
-            gameEnd = true;
+            _gameEnd = true;
             if (_board.GetResult == Result.Draw)
             {
                 Indicator.Text = "Ничья";
@@ -125,7 +125,7 @@ public partial class CheckersWindow : Window
         _gameplay = gameplay;
         _sprites = new CheckerSprite[8, 8];
         _board = new CheckersBoard(8, 12);
-        gameEnd = false;
+        _gameEnd = false;
         InitializeComponent();
         UpdateSprites();
         Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";

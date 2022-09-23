@@ -2,42 +2,42 @@ namespace Checkers;
 
 public class Checker
 {
-    private bool white, missis, exists;
+    private bool _white, _missis, _exists;
 
     public Checker(bool isWhite, bool isMissis, bool isExists = false)
     {
-        white = isWhite;
-        missis = isMissis;
-        exists = isExists;
+        _white = isWhite;
+        _missis = isMissis;
+        _exists = isExists;
     }
 
     public bool IsWhite()
     {
-        return white;
+        return _white;
     }
 
     public bool IsMissis()
     {
-        return missis;
+        return _missis;
     }
 
     public bool IsExists()
     {
-        return exists;
+        return _exists;
     }
 
     public void Delete()
     {
-        exists = false;
+        _exists = false;
     }
 
     public Checker Copy()
     {
-        return new Checker(white, missis, exists);
+        return new Checker(_white, _missis, _exists);
     }
 
     public void BecomeMisis()
     {
-        missis = true;
+        _missis = true;
     }
 }

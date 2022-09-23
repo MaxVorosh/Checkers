@@ -20,9 +20,9 @@ namespace Checkers
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Mode SelectedMode;
-        private Difficult SelectedDifficult;
-        private Gameplay selectedGameplay;
+        private Mode _selectedMode;
+        private Difficult _selectedDifficult;
+        private Gameplay _selectedGameplay;
 
         public MainWindow()
         {
@@ -31,29 +31,29 @@ namespace Checkers
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            CheckersWindow checkersWindow = new CheckersWindow(SelectedMode, SelectedDifficult, selectedGameplay);
+            CheckersWindow checkersWindow = new CheckersWindow(_selectedMode, _selectedDifficult, _selectedGameplay);
             checkersWindow.Show();
             this.Close();
         }
 
         private void ChangeDifficult(string newDifficult)
         {
-            SelectedDifficult = (Difficult)Enum.Parse(typeof(Difficult), newDifficult);
+            _selectedDifficult = (Difficult)Enum.Parse(typeof(Difficult), newDifficult);
         }
 
         private void ChangeGameplay(string newGameplay)
         {
             if (newGameplay == "Русские")
             {
-                selectedGameplay = Gameplay.Russian;
+                _selectedGameplay = Gameplay.Russian;
             }
             else if (newGameplay == "Поддавки")
             {
-                selectedGameplay = Gameplay.Giveaway;
+                _selectedGameplay = Gameplay.Giveaway;
             }
             else
             {
-                selectedGameplay = Gameplay.International;
+                _selectedGameplay = Gameplay.International;
             }
         }
 
@@ -61,12 +61,12 @@ namespace Checkers
         {
             if (newMode == "2 players")
             {
-                SelectedMode = Mode.Multiplayer;
+                _selectedMode = Mode.Multiplayer;
                 DifficultStackPanel.Visibility = Visibility.Hidden;
             }
             else
             {
-                SelectedMode = Mode.SinglePlayer;
+                _selectedMode = Mode.SinglePlayer;
                 DifficultStackPanel.Visibility = Visibility.Visible;
             }
         }
