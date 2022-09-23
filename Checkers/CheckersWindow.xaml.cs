@@ -15,9 +15,14 @@ public partial class CheckersWindow : Window
     private Gameplay _gameplay;
     private CheckerSprite?[,] _sprites;
     private CheckersBoard _board;
+    private bool gameEnd;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
+        if (gameEnd)
+        {
+            return;
+        }
         Point p = e.GetPosition(this);
         p = GameWindow.TranslatePoint(p, BoardBorder);
         int x = Convert.ToInt32(p.X - 2);
@@ -30,6 +35,22 @@ public partial class CheckersWindow : Window
         _board.NewCoords(y, x);
         UpdateSprites();
         Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
+        if (_board.GetResult != Result.NotEnd)
+        {
+            gameEnd = true;
+            if (_board.GetResult == Result.Draw)
+            {
+                Indicator.Text = "Ничья";
+            }
+            else if (_board.GetResult == Result.BlackWin)
+            {
+                Indicator.Text = "Победа чёрных";
+            }
+            else
+            {
+                Indicator.Text = "Победа белых";
+            }
+        }
     }
 
     public void AddSprite(int x, int y, bool isWhite, bool isMissis)
@@ -104,6 +125,7 @@ public partial class CheckersWindow : Window
         _gameplay = gameplay;
         _sprites = new CheckerSprite[8, 8];
         _board = new CheckersBoard(8, 12);
+        gameEnd = false;
         InitializeComponent();
         UpdateSprites();
         Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";

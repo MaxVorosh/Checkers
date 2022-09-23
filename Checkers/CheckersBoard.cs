@@ -302,6 +302,8 @@ public class CheckersBoard
 
     public bool IsWhiteTurn => isWhiteTurn;
 
+    public Result GetResult => result;
+
     /*public void Print()
     {
         board.Print();
