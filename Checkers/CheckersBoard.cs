@@ -67,7 +67,7 @@ public class CheckersBoard
                 }
             }
 
-            if (isMoveStarted || mustCapture)
+            if (mustCapture)
             {
                 return (canTake == 1);
             }
@@ -119,11 +119,11 @@ public class CheckersBoard
             int currentX = tileFrom.Item1 + i * xMultiplier;
             int currentY = tileFrom.Item2 + i * yMultiplier;
             var currentTile = new Tuple<int, int>(currentX, currentY);
-            if (board.GetChecker(currentTile).IsWhite())
+            if (board.GetChecker(currentTile).IsExists() && board.GetChecker(currentTile).IsWhite())
             {
                 _whiteCheckers--;
             }
-            else
+            else if (board.GetChecker(currentTile).IsExists())
             {
                 _blackCheckers--;
             }
