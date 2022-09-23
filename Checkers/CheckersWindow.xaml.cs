@@ -26,6 +26,7 @@ public partial class CheckersWindow : Window
         {
             return;
         }
+
         _board.NewCoords(y, x);
         UpdateSprites();
         Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
@@ -59,6 +60,7 @@ public partial class CheckersWindow : Window
                 {
                     DeleteSprite(i, j);
                 }
+
                 var checker = _board.GetChecker(new Tuple<int, int>(i, j));
                 if (checker.IsExists())
                 {
@@ -94,7 +96,7 @@ public partial class CheckersWindow : Window
             }
         }
     }*/
-    
+
     public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay)
     {
         _gameMode = mode;

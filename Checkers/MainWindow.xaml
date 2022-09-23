@@ -8,26 +8,26 @@
         Title="Checkers" Height="200" Width="400">
     <Grid x:Name="MainGrid" Background="Azure">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="1" Grid.Column="1" Content="Start" FontSize="22" Width="75" Height = "50" Click="ButtonClick"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="Start" FontSize="22" Width="75" Height="50" Click="ButtonClick" />
         <StackPanel Grid.Row="0" Grid.Column="1" x:Name="DifficultStackPanel">
             <RadioButton GroupName="Difficult" Content="Easy" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Difficult" Content="Medium" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Difficult" Content="Hard" Checked="RadioButtonChecked" />
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="0" x:Name="ModeStackPanel">
-            <RadioButton GroupName="Mode" Content="1 player" IsChecked="True" Checked="RadioButtonChecked"/>
+            <RadioButton GroupName="Mode" Content="1 player" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Mode" Content="2 players" Checked="RadioButtonChecked" />
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="2" x:Name="GameplayPanel">
-            <RadioButton GroupName="Gameplay" Content="Руссские" IsChecked="True" Checked="RadioButtonChecked"/>
+            <RadioButton GroupName="Gameplay" Content="Руссские" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Gameplay" Content="Поддавки" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Gameplay" Content="Международные" Checked="RadioButtonChecked" />
         </StackPanel>

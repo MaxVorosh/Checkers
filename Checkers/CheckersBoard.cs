@@ -299,6 +299,7 @@ public class CheckersBoard
     {
         return board.GetChecker(tile);
     }
+
     public bool IsWhiteTurn => isWhiteTurn;
 
     /*public void Print()

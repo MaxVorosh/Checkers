@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 
 namespace Checkers
 {
-    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -89,7 +88,7 @@ namespace Checkers
             }
         }
     }
-    
+
     /*public static void Main(string[] args)
     {
         CheckersBoard board = new CheckersBoard(8, 12);
@@ -104,7 +103,4 @@ namespace Checkers
             s = Console.ReadLine()!;
         }
     }*/
-    
 }
-
-

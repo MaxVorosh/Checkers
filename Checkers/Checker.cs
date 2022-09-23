@@ -4,7 +4,7 @@ public class Checker
 {
     private bool white, missis, exists;
 
-    public Checker(bool isWhite, bool isMissis, bool isExists=false)
+    public Checker(bool isWhite, bool isMissis, bool isExists = false)
     {
         white = isWhite;
         missis = isMissis;
