@@ -10,7 +10,7 @@ public class CheckersBoard
     private Board board;
     private Tuple<int, int> _currentTile;
     private bool isMoveStarted;
-    private int result;
+    private Result result;
     private int _whiteCheckers;
     private int _blackCheckers;
 
@@ -24,7 +24,7 @@ public class CheckersBoard
         isMoveStarted = false;
         _whiteCheckers = cnt;
         _blackCheckers = cnt;
-        result = -1; // 0 - white win, 1 - draw, 2 - black win
+        result = Result.NotEnd;
     }
 
     Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
@@ -260,15 +260,15 @@ public class CheckersBoard
         isWhiteTurn = !isWhiteTurn;
         if (rule15 == 30)
         {
-            result = 1;
+            result = Result.Draw;
         }
         else if (_whiteCheckers == 0)
         {
-            result = 2;
+            result = Result.BlackWin;
         }
-        else
+        else if (_blackCheckers == 0)
         {
-            result = 0;
+            result = Result.WhiteWin;
         }
         //If someone can't move, he lose. Check it 
     }
