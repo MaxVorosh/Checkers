@@ -10,62 +10,79 @@ namespace Checkers;
 
 public partial class CheckersWindow : Window
 {
+    // Window, that shows game
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;
-    private CheckerSprite?[,] _sprites;
-    private CheckersBoard _board;
+    private readonly CheckerSprite?[,] _sprites; // Checkers images, that consists of ellipses
+    private readonly CheckersBoard _board; // Board, that responsible for business-logic
     private bool _gameEnd;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
+        // Event of clicking on the board
+        
         if (_gameEnd)
         {
             return;
         }
-        Point p = e.GetPosition(this);
+        
+        // Calculating cursor coordinates
+        var p = e.GetPosition(this);
         p = GameWindow.TranslatePoint(p, BoardBorder);
-        int x = Convert.ToInt32(p.X - 2);
-        int y = Convert.ToInt32(p.Y - 2);
+        var x = Convert.ToInt32(p.X - 2);
+        var y = Convert.ToInt32(p.Y - 2);
         if (x < 0 || y < 0 || x > 400 || y > 400)
         {
             return;
         }
+        
+        // Give coords to the board
         _board.NewCoords(y, x);
+        
+        // Update interface
         SetIndicatorText();
         UpdateSprites();
         
     }
 
-    public void AddSprite(int x, int y, bool isWhite, bool isMissis)
+    private void AddSprite(int x, int y, bool isWhite, bool isMissis)
     {
+        // Add a checker's image on the board
+        
         var checker = new CheckerSprite(isWhite, isMissis);
         _sprites[x, y] = checker;
+        
         Board.Children.Add(checker.MainShape);
         Grid.SetRow(checker.MainShape, x);
         Grid.SetColumn(checker.MainShape, y);
+        
         Board.Children.Add(checker.MissisShape);
         Grid.SetRow(checker.MissisShape, x);
         Grid.SetColumn(checker.MissisShape, y);
     }
 
-    public void DeleteSprite(int x, int y)
+    private void DeleteSprite(int x, int y)
     {
+        // Delete checker's image from the board
         Board.Children.Remove(_sprites[x, y].MainShape);
         Board.Children.Remove(_sprites[x, y].MissisShape);
     }
 
-    public void UpdateSprites()
+    private void UpdateSprites()
     {
+        // Redrawing all checkers on the board in relation to position on the board
         for (int i = 0; i < 8; ++i)
         {
             for (int j = 0; j < 8; ++j)
             {
+                // Delete not empty image
                 if (_sprites[i, j] != null)
                 {
                     DeleteSprite(i, j);
                 }
 
+                // Add new image, if it's necessary
                 var checker = _board.GetChecker(new Tuple<int, int>(i, j));
                 if (checker.IsExists())
                 {
@@ -75,53 +92,21 @@ public partial class CheckersWindow : Window
         }
     }
 
-    public void SetIndicatorText()
+    private void SetIndicatorText()
     {
+        // Set text on the TextBlock in relation to game status
         Indicator.Text = (_board.IsWhiteTurn) ? "White to move" : "Black to move";
         if (_board.GetResult != Result.NotEnd)
         {
             _gameEnd = true;
-            if (_board.GetResult == Result.Draw)
+            Indicator.Text = _board.GetResult switch
             {
-                Indicator.Text = "Draw";
-            }
-            else if (_board.GetResult == Result.BlackWin)
-            {
-                Indicator.Text = "Black wins";
-            }
-            else
-            {
-                Indicator.Text = "White wins";
-            }
+                Result.Draw => "Draw",
+                Result.BlackWin => "Black wins",
+                _ => "White wins"
+            };
         }
     }
-
-    /*private void SetGrid()
-    {
-        for (int i = 0; i < 8; ++i)
-        {
-            var columnDefinition = new ColumnDefinition();
-            var rowDefinition = new RowDefinition();
-            columnDefinition.Width = new GridLength(50);
-            rowDefinition.Height = new GridLength(50);
-            Board.ColumnDefinitions.Add(columnDefinition);
-            Board.RowDefinitions.Add(rowDefinition);
-        }
-
-        for (int i = 0; i < 8; ++i)
-        {
-            for (int j = 0; j < 8; ++j)
-            {
-                Border border = new Border();
-                border.Child = Board;
-                border.Background = Brushes.GreenYellow;
-                border.BorderBrush = Brushes.Black;
-                border.BorderThickness = new Thickness(2);
-                border.CornerRadius = new CornerRadius(45);
-                border.Padding = new Thickness(25);
-            }
-        }
-    }*/
 
     public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay)
     {

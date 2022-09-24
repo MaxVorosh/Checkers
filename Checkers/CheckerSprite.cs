@@ -5,23 +5,24 @@ namespace Checkers;
 
 public class CheckerSprite
 {
-    public Ellipse MainShape;
-    public Ellipse MissisShape;
+    // Ellipsis, that shows checkers on the board
+    public Ellipse MainShape; // Ellipse for all checkers
+    public Ellipse MissisShape; // Ellipse, that shows, that this checker is missis
 
     public CheckerSprite(bool isWhite, bool isMissis)
     {
-        MainShape = DrawEllipse(isWhite, 40);
+        MainShape = CreateEllipse(isWhite, 40);
         if (isMissis)
         {
-            MissisShape = DrawEllipse(!isWhite, 10);
+            MissisShape = CreateEllipse(!isWhite, 10);
         }
         else
         {
-            MissisShape = DrawEllipse(isWhite, 10);
+            MissisShape = CreateEllipse(isWhite, 10);
         }
     }
 
-    public Ellipse DrawEllipse(bool isWhite, int size)
+    public Ellipse CreateEllipse(bool isWhite, int size)
     {
         Ellipse el = new Ellipse();
         el.Width = size;

@@ -15,9 +15,8 @@ using System.Windows.Shapes;
 
 namespace Checkers
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    // Game parameter selection window
+
     public partial class MainWindow : Window
     {
         private Mode _selectedMode;
@@ -31,6 +30,7 @@ namespace Checkers
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
+            // Function, that starts the game after button click
             CheckersWindow checkersWindow = new CheckersWindow(_selectedMode, _selectedDifficult, _selectedGameplay);
             checkersWindow.Show();
             this.Close();
@@ -43,18 +43,7 @@ namespace Checkers
 
         private void ChangeGameplay(string newGameplay)
         {
-            if (newGameplay == "Русские")
-            {
-                _selectedGameplay = Gameplay.Russian;
-            }
-            else if (newGameplay == "Поддавки")
-            {
-                _selectedGameplay = Gameplay.Giveaway;
-            }
-            else
-            {
-                _selectedGameplay = Gameplay.International;
-            }
+            _selectedGameplay = (Gameplay)Enum.Parse(typeof(Difficult), newGameplay);
         }
 
         private void ChangeMode(string newMode)
@@ -73,34 +62,20 @@ namespace Checkers
 
         private void RadioButtonChecked(object sender, RoutedEventArgs e)
         {
+            // Function chooses action depends on pressed radioButton group
             RadioButton pressed = (RadioButton)sender;
-            if (pressed.GroupName == "Difficult")
+            switch (pressed.GroupName)
             {
-                ChangeDifficult(pressed.Content.ToString());
-            }
-            else if (pressed.GroupName == "Gameplay")
-            {
-                ChangeGameplay(pressed.Content.ToString());
-            }
-            else
-            {
-                ChangeMode(pressed.Content.ToString());
+                case "Difficult":
+                    ChangeDifficult(pressed.Content.ToString());
+                    break;
+                case "Gameplay":
+                    ChangeGameplay(pressed.Content.ToString());
+                    break;
+                default:
+                    ChangeMode(pressed.Content.ToString());
+                    break;
             }
         }
     }
-
-    /*public static void Main(string[] args)
-    {
-        CheckersBoard board = new CheckersBoard(8, 12);
-        board.Print();
-        string s = Console.ReadLine()!;
-        while (s != "end")
-        {
-            int a = int.Parse(s.Split(' ')[0]);
-            int b = int.Parse(s.Split(' ')[1]);
-            board.NewTile(new Tuple<int, int>(a, b));
-            board.Print();
-            s = Console.ReadLine()!;
-        }
-    }*/
 }

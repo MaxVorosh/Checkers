@@ -2,13 +2,16 @@ namespace Checkers;
 
 public class Checker
 {
-    private bool _white, _missis, _exists;
+    // Class, that stores information about every checker
+    
+    private readonly bool _white;
+    private bool _missis, _exists;
 
     public Checker(bool isWhite, bool isMissis, bool isExists = false)
     {
-        _white = isWhite;
-        _missis = isMissis;
-        _exists = isExists;
+        _white = isWhite; // is checker white
+        _missis = isMissis; // is checker missis
+        _exists = isExists; // is checker exists
     }
 
     public bool IsWhite()
@@ -36,7 +39,7 @@ public class Checker
         return new Checker(_white, _missis, _exists);
     }
 
-    public void BecomeMisis()
+    public void BecomeMissis()
     {
         _missis = true;
     }

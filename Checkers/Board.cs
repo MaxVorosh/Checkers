@@ -5,10 +5,12 @@ namespace Checkers;
 
 public class Board
 {
-    private int _size;
-    private int _tileSize;
-    private Checker[,] _checkers;
-    private int _cntCheckersForOne;
+    // Class, that responsible for actual movement of checkers
+    
+    private readonly int _size; // Count rows and columns at the board
+    private readonly int _tileSize; // size of every tile in pixels
+    private readonly Checker[,] _checkers; // Array of position of checkers
+    private readonly int _cntCheckersForOne;
 
     public Board(int size, int cnt)
     {
@@ -29,6 +31,7 @@ public class Board
 
     private void ArrangeCheckers()
     {
+        // Get start position of checkers
         for (int i = 0; i < _cntCheckersForOne / (_size / 2); ++i)
         {
             for (int j = 0; j < _size; ++j)
@@ -44,6 +47,7 @@ public class Board
 
     public Tuple<int, int> GetTile(int xMouse, int yMouse)
     {
+        // Get coords, that refers to the board. Returns tile with this coords
         return new Tuple<int, int>(xMouse / _tileSize, yMouse / _tileSize);
     }
 
@@ -59,34 +63,9 @@ public class Board
 
     public void MoveChecker(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
     {
+        // Actual movement of a checker. Can violate game rules
         _checkers[tileTo.Item1, tileTo.Item2] = _checkers[tileFrom.Item1, tileFrom.Item2].Copy();
         _checkers[tileFrom.Item1, tileFrom.Item2].Delete();
     }
-
-    /*public void Print()
-    {
-        Console.Write(' ');
-        for (int i = 0; i < _size; ++i)
-        {
-            Console.Write(Convert.ToString(i));
-        }
-        Console.Write('\n');
-
-        for (int i = _size - 1; i >= 0; --i)
-        {
-            Console.Write(Convert.ToString(i));
-            for (int j = 0; j < _size; ++j)
-            {
-                if (checkers[i, j].IsExists())
-                {
-                    Console.Write((checkers[i, j].IsWhite()) ? "W" : "B");
-                }
-                else
-                {
-                    Console.Write(".");
-                }
-            }
-            Console.Write('\n');
-        }
-    }*/
+    
 }
