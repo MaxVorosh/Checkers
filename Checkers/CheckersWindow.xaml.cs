@@ -152,7 +152,17 @@ public partial class CheckersWindow : Window
 
     private void Resign(object sender, RoutedEventArgs e)
     {
-        
+        // Function ends a game, when someone click on "Resign" button
+        var btn = (Button)e.Source;
+        if (btn.Name == WhiteResign.Name)
+        {
+            _board.SetResult(Result.BlackWin);
+        }
+        else
+        {
+            _board.SetResult(Result.WhiteWin);
+        }
+        SetIndicatorText();
     }
 
     private void UpdateButtons()

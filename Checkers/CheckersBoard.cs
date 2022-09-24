@@ -347,4 +347,9 @@ public class CheckersBoard
     public bool IsWhiteTurn => _isWhiteTurn;
 
     public Result GetResult => _result;
+
+    public void SetResult(Result newResult)
+    {
+        _result = newResult;
+    }
 }
