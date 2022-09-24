@@ -31,26 +31,10 @@ public partial class CheckersWindow : Window
         {
             return;
         }
-
         _board.NewCoords(y, x);
+        SetIndicatorText();
         UpdateSprites();
-        Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
-        if (_board.GetResult != Result.NotEnd)
-        {
-            _gameEnd = true;
-            if (_board.GetResult == Result.Draw)
-            {
-                Indicator.Text = "Ничья";
-            }
-            else if (_board.GetResult == Result.BlackWin)
-            {
-                Indicator.Text = "Победа чёрных";
-            }
-            else
-            {
-                Indicator.Text = "Победа белых";
-            }
-        }
+        
     }
 
     public void AddSprite(int x, int y, bool isWhite, bool isMissis)
@@ -87,6 +71,27 @@ public partial class CheckersWindow : Window
                 {
                     AddSprite(i, j, checker.IsWhite(), checker.IsMissis());
                 }
+            }
+        }
+    }
+
+    public void SetIndicatorText()
+    {
+        Indicator.Text = (_board.IsWhiteTurn) ? "White to move" : "Black to move";
+        if (_board.GetResult != Result.NotEnd)
+        {
+            _gameEnd = true;
+            if (_board.GetResult == Result.Draw)
+            {
+                Indicator.Text = "Draw";
+            }
+            else if (_board.GetResult == Result.BlackWin)
+            {
+                Indicator.Text = "Black wins";
+            }
+            else
+            {
+                Indicator.Text = "White wins";
             }
         }
     }
@@ -128,7 +133,7 @@ public partial class CheckersWindow : Window
         _gameEnd = false;
         InitializeComponent();
         UpdateSprites();
-        Indicator.Text = (_board.IsWhiteTurn) ? "Ход белых" : "Ход чёрных";
+        SetIndicatorText();
         //SetGrid();
     }
 }

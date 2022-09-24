@@ -4,7 +4,7 @@ namespace Checkers;
 
 public class CheckersBoard
 {
-    private int _size;
+    private readonly int _size;
     private bool _isWhiteTurn;
     private int _rule15;
     private Board _board;
@@ -176,7 +176,7 @@ public class CheckersBoard
     {
         for (int i = 2; i < _size; ++i)
         {
-            Tuple<int, int> upLeft = new Tuple<int, int>(tile.Item1 + i, tile.Item2 - i);
+            var upLeft = new Tuple<int, int>(tile.Item1 + i, tile.Item2 - i);
             Tuple<int, int> upRight = new Tuple<int, int>(tile.Item1 + i, tile.Item2 + i);
             Tuple<int, int> downLeft = new Tuple<int, int>(tile.Item1 - i, tile.Item2 - i);
             Tuple<int, int> downRight = new Tuple<int, int>(tile.Item1 - i, tile.Item2 + i);
