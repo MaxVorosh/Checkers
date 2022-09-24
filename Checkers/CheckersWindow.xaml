@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Checkers"
         mc:Ignorable="d"
         Title="CheckersWindow" Height="500" Width="500"
-        x:Name="GameWindow">
+        x:Name="GameWindow"
+        ResizeMode="NoResize">
     <Grid Background="Azure">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*" />
