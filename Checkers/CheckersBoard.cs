@@ -172,15 +172,21 @@ public class CheckersBoard
         return (0 <= tile.Item1 && 0 <= tile.Item2 && tile.Item1 < _size && tile.Item2 < _size);
     }
 
+    public Tuple<int, int>[] GetDiagonalMoves(Tuple<int, int> tile, int i)
+    {
+        var upLeft = new Tuple<int, int>(tile.Item1 + i, tile.Item2 - i);
+        var upRight = new Tuple<int, int>(tile.Item1 + i, tile.Item2 + i);
+        var downLeft = new Tuple<int, int>(tile.Item1 - i, tile.Item2 - i);
+        var downRight = new Tuple<int, int>(tile.Item1 - i, tile.Item2 + i);
+        Tuple<int, int>[] moves = { upLeft, upRight, downLeft, downRight };
+        return moves;
+    }
+
     public bool CanCaptureColor(Tuple<int, int> tile)
     {
-        for (int i = 2; i < _size; ++i)
+        for (int i = 2; i <= _size; ++i)
         {
-            var upLeft = new Tuple<int, int>(tile.Item1 + i, tile.Item2 - i);
-            Tuple<int, int> upRight = new Tuple<int, int>(tile.Item1 + i, tile.Item2 + i);
-            Tuple<int, int> downLeft = new Tuple<int, int>(tile.Item1 - i, tile.Item2 - i);
-            Tuple<int, int> downRight = new Tuple<int, int>(tile.Item1 - i, tile.Item2 + i);
-            Tuple<int, int>[] moves = { upLeft, upRight, downLeft, downRight };
+            var moves = GetDiagonalMoves(tile, i);
             foreach (var newTile in moves)
             {
                 if (IsValidTile(newTile) && CanCaptureTile(tile, newTile))
@@ -209,6 +215,40 @@ public class CheckersBoard
         }
 
         return false;
+    }
+
+    public bool CanCheckerMove(Tuple<int, int> tile)
+    {
+        for (int i = 1; i <= _size; ++i)
+        {
+            var moves = GetDiagonalMoves(tile, i);
+            foreach (var newTile in moves)
+            {
+                if (IsValidTile(newTile) && CanMove(tile, newTile, false))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public bool CanColorMove(bool isWhite)
+    {
+        bool canMove = false;
+        for (int i = 0; i < _size; ++i)
+        {
+            for (int j = 0; j < _size; ++j)
+            {
+                var tile = new Tuple<int, int>(i, j);
+                if (_board.GetChecker(tile).IsExists() && isWhite == _board.GetChecker(tile).IsWhite())
+                {
+                    canMove |= CanCheckerMove(tile);
+                }
+            }
+        }
+        return canMove;
     }
 
     public void Turn(Tuple<int, int> tileTo)
@@ -263,15 +303,14 @@ public class CheckersBoard
         {
             _result = Result.Draw;
         }
-        else if (_whiteCheckers == 0)
+        else if (_isWhiteTurn && !CanColorMove(_isWhiteTurn))
         {
             _result = Result.BlackWin;
         }
-        else if (_blackCheckers == 0)
+        else if (!_isWhiteTurn && !CanColorMove(_isWhiteTurn))
         {
             _result = Result.WhiteWin;
         }
-        //If someone can't move, he lose. Check it 
     }
 
     public void NewTile(Tuple<int, int> tile)
