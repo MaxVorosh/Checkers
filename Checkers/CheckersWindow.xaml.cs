@@ -21,9 +21,12 @@ public partial class CheckersWindow : Window
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
         // Event of clicking on the board
-        
+
         if (_gameEnd)
+        {
+            HideGameButtons();
             return;
+        }
 
         // Calculating cursor coordinates
         var p = e.GetPosition(this);
@@ -163,6 +166,25 @@ public partial class CheckersWindow : Window
             _board.SetResult(Result.WhiteWin);
         }
         SetIndicatorText();
+        HideGameButtons();
+    }
+
+    private void Draw(object sender, RoutedEventArgs e)
+    {
+        if (WhiteDraw.IsChecked == true && BlackDraw.IsChecked == true)
+        {
+            _board.SetResult(Result.Draw);
+            SetIndicatorText();
+            HideGameButtons();
+        }
+    }
+
+    private void HideGameButtons()
+    {
+        WhiteDraw.Visibility = Visibility.Hidden;
+        BlackDraw.Visibility = Visibility.Hidden;
+        WhiteResign.Visibility = Visibility.Hidden;
+        BlackResign.Visibility = Visibility.Hidden;
     }
 
     private void UpdateButtons()

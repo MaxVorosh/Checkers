@@ -90,10 +90,10 @@
             </Grid.RowDefinitions>
             <Button Grid.Row="3" Width="100" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"
                     Content="Resign" x:Name="WhiteResign" Click="Resign"/>
-            <CheckBox Grid.Row="2" VerticalAlignment="Center" x:Name="WhiteDraw" Content="Draw"/>
+            <CheckBox Grid.Row="2" VerticalAlignment="Center" x:Name="WhiteDraw" Content="Draw" Checked="Draw"/>
             <Button Grid.Row="0" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                     Content="Resign" x:Name="BlackResign" Click="Resign"/>
-            <CheckBox Grid.Row="1" VerticalAlignment="Center" x:Name="BlackDraw" Content="Draw"/>
+            <CheckBox Grid.Row="1" VerticalAlignment="Center" x:Name="BlackDraw" Content="Draw" Checked="Draw"/>
         </Grid>
     </Grid>
 </Window>
