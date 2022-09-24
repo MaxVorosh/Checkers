@@ -39,7 +39,7 @@ public partial class CheckersWindow : Window
         // Update interface
         SetIndicatorText();
         UpdateSprites();
-        
+        UpdateButtons();
     }
 
     private void AddSprite(int x, int y, bool isWhite, bool isMissis)
@@ -147,6 +147,30 @@ public partial class CheckersWindow : Window
         UpdateSprites();
         SetIndicatorText();
         DrawNotation();
-        //SetGrid();
+        UpdateButtons();
+    }
+
+    private void Resign(object sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private void UpdateButtons()
+    {
+        // Hide and show "Resign" and "Draw" buttons
+        if (_board.IsWhiteTurn)
+        {
+            WhiteDraw.Visibility = Visibility.Visible;
+            WhiteResign.Visibility = Visibility.Visible;
+            BlackDraw.Visibility = Visibility.Hidden;
+            BlackResign.Visibility = Visibility.Hidden;
+        }
+        else
+        {
+            WhiteDraw.Visibility = Visibility.Hidden;
+            WhiteResign.Visibility = Visibility.Hidden;
+            BlackDraw.Visibility = Visibility.Visible;
+            BlackResign.Visibility = Visibility.Visible;
+        }
     }
 }

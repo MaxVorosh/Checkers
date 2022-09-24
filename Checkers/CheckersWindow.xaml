@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Checkers"
         mc:Ignorable="d"
-        Title="CheckersWindow" Height="500" Width="500"
+        Title="CheckersWindow" Height="500" Width="550"
         x:Name="GameWindow"
         ResizeMode="NoResize">
     <Grid Background="Azure">
@@ -13,9 +13,13 @@
             <RowDefinition Height="0.1*" />
             <RowDefinition Height="0.9*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="The result will be here" HorizontalAlignment="Center" VerticalAlignment="Center"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*"/>
+            <ColumnDefinition Width="0.2*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="The result will be here" HorizontalAlignment="Center" VerticalAlignment="Center"
                    x:Name="Indicator" />
-        <Border Grid.Row="1" MouseDown="BoardClick" HorizontalAlignment="Center" VerticalAlignment="Top"
+        <Border Grid.Column="0" Grid.Row="1" MouseDown="BoardClick" HorizontalAlignment="Center" VerticalAlignment="Top"
                 BorderBrush="Black" BorderThickness="2" Background="#769656" x:Name="BoardBorder">
             <Grid x:Name="Board">
                 <Grid.ColumnDefinitions>
@@ -77,5 +81,19 @@
                 <Border Grid.Column="7" Grid.Row="7" Background="#eeeed2" />
             </Grid>
         </Border>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button Grid.Row="3" Width="100" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    Content="Resign" x:Name="WhiteResign" Click="Resign"/>
+            <CheckBox Grid.Row="2" VerticalAlignment="Center" x:Name="WhiteDraw" Content="Draw"/>
+            <Button Grid.Row="0" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                    Content="Resign" x:Name="BlackResign" Click="Resign"/>
+            <CheckBox Grid.Row="1" VerticalAlignment="Center" x:Name="BlackDraw" Content="Draw"/>
+        </Grid>
     </Grid>
 </Window>
