@@ -94,6 +94,10 @@
             <Button Grid.Row="0" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                     Content="Resign" x:Name="BlackResign" Click="Resign"/>
             <CheckBox Grid.Row="1" VerticalAlignment="Center" x:Name="BlackDraw" Content="Draw" Checked="Draw"/>
+            <Button Grid.Row="1" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Content="Back to menu" x:Name="ToMenuButton" Click="BackToMenu" Visibility="Hidden" />
+            <Button Grid.Row="2" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Content="Rematch" x:Name="RematchButton" Click="Rematch" Visibility="Hidden"/>
         </Grid>
     </Grid>
 </Window>

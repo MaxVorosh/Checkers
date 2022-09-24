@@ -14,8 +14,8 @@ public partial class CheckersWindow : Window
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;
-    private readonly CheckerSprite?[,] _sprites; // Checkers images, that consists of ellipses
-    private readonly CheckersBoard _board; // Board, that responsible for business-logic
+    private CheckerSprite?[,] _sprites; // Checkers images, that consists of ellipses
+    private CheckersBoard _board; // Board, that responsible for business-logic
     private bool _gameEnd;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
@@ -24,7 +24,7 @@ public partial class CheckersWindow : Window
 
         if (_gameEnd)
         {
-            HideGameButtons();
+            ChangeButtonsAfterGame();
             return;
         }
 
@@ -59,6 +59,20 @@ public partial class CheckersWindow : Window
         Board.Children.Add(checker.MissisShape);
         Grid.SetRow(checker.MissisShape, x);
         Grid.SetColumn(checker.MissisShape, y);
+    }
+
+    private void DeleteAllCheckers()
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            for (int j = 0; j < 8; ++j)
+            {
+                if (_sprites[i, j] != null)
+                {
+                    DeleteSprite(i, j);
+                }
+            }
+        }
     }
 
     private void DeleteSprite(int x, int y)
@@ -166,25 +180,29 @@ public partial class CheckersWindow : Window
             _board.SetResult(Result.WhiteWin);
         }
         SetIndicatorText();
-        HideGameButtons();
+        ChangeButtonsAfterGame();
     }
 
     private void Draw(object sender, RoutedEventArgs e)
     {
+        // When both CheckBoxes are clicked, than ir's draw
         if (WhiteDraw.IsChecked == true && BlackDraw.IsChecked == true)
         {
             _board.SetResult(Result.Draw);
             SetIndicatorText();
-            HideGameButtons();
+            ChangeButtonsAfterGame();
         }
     }
 
-    private void HideGameButtons()
+    private void ChangeButtonsAfterGame()
     {
         WhiteDraw.Visibility = Visibility.Hidden;
         BlackDraw.Visibility = Visibility.Hidden;
         WhiteResign.Visibility = Visibility.Hidden;
         BlackResign.Visibility = Visibility.Hidden;
+        WhiteDraw.IsChecked = false;
+        BlackDraw.IsChecked = false;
+        ShowAfterGameButtons();
     }
 
     private void UpdateButtons()
@@ -204,5 +222,37 @@ public partial class CheckersWindow : Window
             BlackDraw.Visibility = Visibility.Visible;
             BlackResign.Visibility = Visibility.Visible;
         }
+    }
+
+    private void ShowAfterGameButtons()
+    {
+        ToMenuButton.Visibility = Visibility.Visible;
+        RematchButton.Visibility = Visibility.Visible;
+    }
+
+    private void HideAfterGameButtons()
+    {
+        ToMenuButton.Visibility = Visibility.Hidden;
+        RematchButton.Visibility = Visibility.Hidden;
+    }
+
+    private void BackToMenu(object sender, RoutedEventArgs e)
+    {
+        var menu = new MainWindow();
+        menu.Show();
+        this.Close();
+    }
+
+    private void Rematch(object sender, RoutedEventArgs e)
+    {
+        // Creates new values (start values) and update form
+        DeleteAllCheckers();
+        _sprites = new CheckerSprite[8, 8];
+        _board = new CheckersBoard(8, 12);
+        _gameEnd = false;
+        UpdateSprites();
+        SetIndicatorText();
+        UpdateButtons();
+        HideAfterGameButtons();
     }
 }

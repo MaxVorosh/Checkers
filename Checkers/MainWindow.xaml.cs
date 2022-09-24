@@ -31,7 +31,7 @@ namespace Checkers
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             // Function, that starts the game after button click
-            CheckersWindow checkersWindow = new CheckersWindow(_selectedMode, _selectedDifficult, _selectedGameplay);
+            var checkersWindow = new CheckersWindow(_selectedMode, _selectedDifficult, _selectedGameplay);
             checkersWindow.Show();
             this.Close();
         }
