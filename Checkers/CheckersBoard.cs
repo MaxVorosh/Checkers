@@ -264,61 +264,8 @@ public class CheckersBoard
         return canMove;
     }
 
-    private void Turn(Tuple<int, int> tileTo)
+    private void UpdateResult()
     {
-        // Makes turn by 2 tiles - current and new
-        
-        // If move is illegal (we can't move or we should move something else to capture), forget current tile
-        if (!CanMove(_currentTile, tileTo, CanCaptureSmth(_isWhiteTurn)))
-        {
-            if (!_isMoveStarted)
-            {
-                RejectCurrentTile();
-            }
-            return;
-        }
-
-        _isMoveStarted = true;
-        bool isCaptured = CanCaptureTile(_currentTile, tileTo); // When checker moves, was it captured something
-        
-        // After move, can this checker capture something else 
-        _board.MoveChecker(_currentTile, tileTo);
-        bool shouldCheckCaptures = CanCaptureColor(tileTo) && isCaptured;
-        _board.MoveChecker(tileTo, _currentTile);
-        
-        if (_board.GetChecker(_currentTile).IsMissis() && !isCaptured)
-        {
-            _rule15++;
-        }
-        else
-        {
-            _rule15 = 0;
-        }
-        
-        Move(_currentTile, tileTo);
-        
-        _currentTile = tileTo;
-        
-        //??
-        if (shouldCheckCaptures)
-        {
-            for (int i = 0; i < _size; ++i)
-            {
-                for (int j = 0; j < _size; ++j)
-                {
-                    if (CanCaptureTile(_currentTile, new Tuple<int, int>(i, j)))
-                    {
-                        return;
-                    }
-                }
-            }
-        }
-
-        // When our turn is end
-        RejectCurrentTile();
-        _isMoveStarted = false;
-        _isWhiteTurn = !_isWhiteTurn;
-        
         if (_rule15 == 30)
         {
             _result = Result.Draw;
@@ -331,6 +278,43 @@ public class CheckersBoard
         {
             _result = Result.WhiteWin;
         }
+    }
+
+    private void Turn(Tuple<int, int> tileTo)
+    {
+        // Makes turn by 2 tiles - current and new
+        
+        // If move is illegal (we can't move or we should move something else to capture), forget current tile
+        if (!CanMove(_currentTile, tileTo, CanCaptureSmth(_isWhiteTurn)))
+        {
+            if (!_isMoveStarted)
+                RejectCurrentTile();
+            return;
+        }
+
+        _isMoveStarted = true;
+        bool isCaptured = CanCaptureTile(_currentTile, tileTo); // When checker moves, was it captured something
+
+        if (_board.GetChecker(_currentTile).IsMissis() && !isCaptured)
+            _rule15++;
+        else
+            _rule15 = 0;
+
+        Move(_currentTile, tileTo);
+        _currentTile = tileTo;
+        
+        // If checker captured something, we check, can it capture something else
+        if (isCaptured)
+        {
+            if (CanCaptureColor(_currentTile))
+                return;
+        }
+
+        // When our turn is end
+        RejectCurrentTile();
+        _isMoveStarted = false;
+        _isWhiteTurn = !_isWhiteTurn;
+        UpdateResult();
     }
 
     private void NewTile(Tuple<int, int> tile)
