@@ -23,20 +23,16 @@ public partial class CheckersWindow : Window
         // Event of clicking on the board
         
         if (_gameEnd)
-        {
             return;
-        }
-        
+
         // Calculating cursor coordinates
         var p = e.GetPosition(this);
         p = GameWindow.TranslatePoint(p, BoardBorder);
         var x = Convert.ToInt32(p.X - 2);
         var y = Convert.ToInt32(p.Y - 2);
         if (x < 0 || y < 0 || x > 400 || y > 400)
-        {
             return;
-        }
-        
+
         // Give coords to the board
         _board.NewCoords(y, x);
         
@@ -108,6 +104,37 @@ public partial class CheckersWindow : Window
         }
     }
 
+    private void AddNotationTextBlock(int row, int column, string text, bool isLeft)
+    {
+        var textBlock = new TextBlock();
+        textBlock.Text = text;
+        Board.Children.Add(textBlock);
+        Grid.SetColumn(textBlock, column);
+        Grid.SetRow(textBlock, row);
+        if (isLeft)
+        {
+            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+            textBlock.VerticalAlignment = VerticalAlignment.Top;
+        }
+        else
+        {
+            textBlock.HorizontalAlignment = HorizontalAlignment.Right;
+            textBlock.VerticalAlignment = VerticalAlignment.Bottom;
+        }
+        textBlock.FontWeight = FontWeights.Bold;
+        textBlock.FontSize = 10;
+    }
+
+    private void DrawNotation()
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            Char letter = Convert.ToChar('a' + 7 - i);
+            AddNotationTextBlock(7, i, i.ToString(), false);
+            AddNotationTextBlock(i, 0, letter.ToString(), true);
+        }
+    }
+
     public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay)
     {
         _gameMode = mode;
@@ -119,6 +146,7 @@ public partial class CheckersWindow : Window
         InitializeComponent();
         UpdateSprites();
         SetIndicatorText();
+        DrawNotation();
         //SetGrid();
     }
 }
