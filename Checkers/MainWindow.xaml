@@ -29,7 +29,7 @@
         <StackPanel Grid.Row="0" Grid.Column="2" x:Name="GameplayPanel">
             <RadioButton GroupName="Gameplay" Content="Russian" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Gameplay" Content="Giveaway" Checked="RadioButtonChecked" />
-            <RadioButton GroupName="Gameplay" Content="International" Checked="RadioButtonChecked" />
+            <RadioButton GroupName="Gameplay" Content="Pool checkers" Checked="RadioButtonChecked" />
         </StackPanel>
     </Grid>
 </Window>

@@ -79,6 +79,7 @@ public partial class CheckersWindow : Window
 
     private void UpdateCanMoveLighting()
     {
+        // Remove old and set new borders for tiles, where selected checker can go
         foreach (var border in _canMoveTiles)
         {
             Board.Children.Remove(border);
@@ -223,7 +224,7 @@ public partial class CheckersWindow : Window
     private void SetDefaultParams()
     {
         _sprites = new CheckerSprite[8, 8];
-        _board = new CheckersBoard(8, 12);
+        _board = new CheckersBoard(8, 12, _gameplay);
         _gameEnd = false;
         _selectedChecker = new Border();
         _canMoveTiles = new List<Border>();

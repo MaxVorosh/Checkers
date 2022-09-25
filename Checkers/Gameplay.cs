@@ -4,5 +4,5 @@ public enum Gameplay
 {
     Russian,
     Giveaway,
-    International
+    PoolCheckers
 }

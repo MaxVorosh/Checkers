@@ -13,16 +13,18 @@ public class CheckersBoard
     private Tuple<int, int> _currentTile; // Tile with a selected checker
     private bool _isMoveStarted; // True, if checker capture something and can capture something else
     private Result _result; // Game status
+    private Gameplay _gameplay;
 
-    public CheckersBoard(int size, int cnt)
+    public CheckersBoard(int size, int cnt, Gameplay gameplay)
     {
         _size = size;
-        _isWhiteTurn = true;
+        _isWhiteTurn = (gameplay != Gameplay.PoolCheckers);
         _rule15 = 0;
         _board = new Board(size, cnt);
         _currentTile = new Tuple<int, int>(-1, -1); // This value shows, that no checker is selected
         _isMoveStarted = false; // Should player continue his turn if he already moved a checker
         _result = Result.NotEnd;
+        _gameplay = gameplay;
     }
 
     private Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
@@ -272,11 +274,11 @@ public class CheckersBoard
         }
         if (_isWhiteTurn && !CanColorMove(_isWhiteTurn))
         {
-            _result = Result.BlackWin;
+            _result = _gameplay != Gameplay.Giveaway ? Result.BlackWin : Result.WhiteWin;
         }
         else if (!_isWhiteTurn && !CanColorMove(_isWhiteTurn))
         {
-            _result = Result.WhiteWin;
+            _result = _gameplay != Gameplay.Giveaway ? Result.WhiteWin : Result.BlackWin;
         }
     }
 
@@ -293,6 +295,7 @@ public class CheckersBoard
         }
 
         _isMoveStarted = true;
+        bool changeMissis = _board.GetChecker(_currentTile).IsMissis(); // Was checker changes from regular to missis
         bool isCaptured = CanCaptureTile(_currentTile, tileTo); // When checker moves, was it captured something
 
         if (_board.GetChecker(_currentTile).IsMissis() && !isCaptured)
@@ -302,9 +305,11 @@ public class CheckersBoard
 
         Move(_currentTile, tileTo);
         _currentTile = tileTo;
+        changeMissis = (!changeMissis) && _board.GetChecker(_currentTile).IsMissis(); // true if it's changed false->true
         
         // If checker captured something, we check, can it capture something else
-        if (isCaptured)
+        // If it is pool checker and 
+        if (isCaptured && (_gameplay != Gameplay.PoolCheckers || !changeMissis))
         {
             if (CanCaptureColor(_currentTile))
                 return;
@@ -370,6 +375,7 @@ public class CheckersBoard
 
     public bool ShouldLight(Tuple<int, int> tile)
     {
+        // True if tile should be with a border (selected checker can go to it)
         return IsSelectedChecker() && CanMove(_currentTile, tile, CanCaptureSmth(_isWhiteTurn));
     }
 }

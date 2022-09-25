@@ -43,7 +43,14 @@ namespace Checkers
 
         private void ChangeGameplay(string newGameplay)
         {
-            _selectedGameplay = (Gameplay)Enum.Parse(typeof(Gameplay), newGameplay);
+            if (newGameplay == "Pool checkers")
+            {
+                _selectedGameplay = Gameplay.PoolCheckers;
+            }
+            else
+            {
+                _selectedGameplay = (Gameplay)Enum.Parse(typeof(Gameplay), newGameplay);
+            }
         }
 
         private void ChangeMode(string newMode)
