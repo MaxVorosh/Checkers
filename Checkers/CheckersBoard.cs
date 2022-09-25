@@ -367,4 +367,9 @@ public class CheckersBoard
     {
         return _currentTile;
     }
+
+    public bool ShouldLight(Tuple<int, int> tile)
+    {
+        return IsSelectedChecker() && CanMove(_currentTile, tile, CanCaptureSmth(_isWhiteTurn));
+    }
 }

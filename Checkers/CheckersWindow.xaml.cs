@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,6 +18,7 @@ public partial class CheckersWindow : Window
     private CheckerSprite?[,] _sprites; // Checkers images, that consists of ellipses
     private CheckersBoard _board; // Board, that responsible for business-logic
     private Border _selectedChecker; // Border around selected checker
+    private List<Border> _canMoveTiles;
     private bool _gameEnd;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
@@ -41,13 +43,14 @@ public partial class CheckersWindow : Window
         _board.NewCoords(y, x);
         
         // Update interface
-        UpdateLighting(x, y);
+        UpdateSelectedLighting(x, y);
+        UpdateCanMoveLighting();
         SetIndicatorText();
         UpdateSprites();
         UpdateButtons();
     }
 
-    private void UpdateLighting(int xCoord, int yCoord)
+    private void UpdateSelectedLighting(int xCoord, int yCoord)
     {
         // Update lighting area near selected checker
         
@@ -65,15 +68,49 @@ public partial class CheckersWindow : Window
         _selectedChecker = new Border();
         
         if (!_board.IsSelectedChecker())
-        {
             return;
-        }
-        
+
         _selectedChecker.BorderBrush = new SolidColorBrush(Color.FromRgb(10, 69, 0));
         _selectedChecker.BorderThickness = new Thickness(3);
         Board.Children.Add(_selectedChecker);
         Grid.SetColumn(_selectedChecker, tile.Item2);
         Grid.SetRow(_selectedChecker, tile.Item1);
+    }
+
+    private void UpdateCanMoveLighting()
+    {
+        foreach (var border in _canMoveTiles)
+        {
+            Board.Children.Remove(border);
+        }
+
+        if (!_board.IsSelectedChecker())
+        {
+            return;
+        }
+
+        for (int i = 0; i < 8; ++i)
+        {
+            for (int j = 0; j < 8; ++j)
+            {
+                if (_board.ShouldLight(new Tuple<int, int>(i, j)))
+                {
+                    Border border = GetCanMoveLighting();
+                    _canMoveTiles.Add(border);
+                    Board.Children.Add(border);
+                    Grid.SetColumn(border, j);
+                    Grid.SetRow(border, i);
+                }
+            }
+        }
+    }
+    
+    private Border GetCanMoveLighting()
+    {
+        var border = new Border();
+        border.BorderBrush = new SolidColorBrush(Color.FromRgb(124, 252, 0));
+        border.BorderThickness = new Thickness(2);
+        return border;
     }
 
     private void AddSprite(int x, int y, bool isWhite, bool isMissis)
@@ -183,20 +220,26 @@ public partial class CheckersWindow : Window
         }
     }
 
+    private void SetDefaultParams()
+    {
+        _sprites = new CheckerSprite[8, 8];
+        _board = new CheckersBoard(8, 12);
+        _gameEnd = false;
+        _selectedChecker = new Border();
+        _canMoveTiles = new List<Border>();
+        UpdateSprites();
+        SetIndicatorText();
+        UpdateButtons();
+    }
+
     public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay)
     {
         _gameMode = mode;
         _gameDifficult = difficult;
         _gameplay = gameplay;
-        _sprites = new CheckerSprite[8, 8];
-        _board = new CheckersBoard(8, 12);
-        _gameEnd = false;
-        _selectedChecker = new Border();
         InitializeComponent();
-        UpdateSprites();
-        SetIndicatorText();
+        SetDefaultParams();
         DrawNotation();
-        UpdateButtons();
     }
 
     private void Resign(object sender, RoutedEventArgs e)
@@ -279,13 +322,7 @@ public partial class CheckersWindow : Window
     {
         // Creates new values (start values) and update form
         DeleteAllCheckers();
-        _sprites = new CheckerSprite[8, 8];
-        _board = new CheckersBoard(8, 12);
-        _gameEnd = false;
-        _selectedChecker = new Border();
-        UpdateSprites();
-        SetIndicatorText();
-        UpdateButtons();
+        SetDefaultParams();
         HideAfterGameButtons();
     }
 }
