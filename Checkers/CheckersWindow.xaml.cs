@@ -26,10 +26,7 @@ public partial class CheckersWindow : Window
         // Event of clicking on the board
 
         if (_gameEnd)
-        {
-            ChangeButtonsAfterGame();
             return;
-        }
 
         // Calculating cursor coordinates
         var p = e.GetPosition(this);
@@ -48,6 +45,10 @@ public partial class CheckersWindow : Window
         SetIndicatorText();
         UpdateSprites();
         UpdateButtons();
+        if (_gameEnd)
+        {
+            ChangeButtonsAfterGame();
+        }
     }
 
     private void UpdateSelectedLighting(int xCoord, int yCoord)
