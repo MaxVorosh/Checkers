@@ -16,6 +16,7 @@ public partial class CheckersWindow : Window
     private Gameplay _gameplay;
     private CheckerSprite?[,] _sprites; // Checkers images, that consists of ellipses
     private CheckersBoard _board; // Board, that responsible for business-logic
+    private Border _selectedChecker; // Border around selected checker
     private bool _gameEnd;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
@@ -40,9 +41,39 @@ public partial class CheckersWindow : Window
         _board.NewCoords(y, x);
         
         // Update interface
+        UpdateLighting(x, y);
         SetIndicatorText();
         UpdateSprites();
         UpdateButtons();
+    }
+
+    private void UpdateLighting(int xCoord, int yCoord)
+    {
+        // Update lighting area near selected checker
+        
+        Tuple<int, int> tile = _board.GetTile(yCoord, xCoord);
+        if (_board.IsSelectedChecker() && !_board.GetSelectedTile().Equals(tile))
+        {
+            return; // If there is selected checker, that captures more than one time, we shouldn't remove border
+        }
+
+        if (_selectedChecker != new Border())
+        {
+            Board.Children.Remove(_selectedChecker);
+        }
+        
+        _selectedChecker = new Border();
+        
+        if (!_board.IsSelectedChecker())
+        {
+            return;
+        }
+        
+        _selectedChecker.BorderBrush = new SolidColorBrush(Color.FromRgb(10, 69, 0));
+        _selectedChecker.BorderThickness = new Thickness(3);
+        Board.Children.Add(_selectedChecker);
+        Grid.SetColumn(_selectedChecker, tile.Item2);
+        Grid.SetRow(_selectedChecker, tile.Item1);
     }
 
     private void AddSprite(int x, int y, bool isWhite, bool isMissis)
@@ -147,7 +178,7 @@ public partial class CheckersWindow : Window
         for (int i = 0; i < 8; ++i)
         {
             Char letter = Convert.ToChar('a' + 7 - i);
-            AddNotationTextBlock(7, i, i.ToString(), false);
+            AddNotationTextBlock(7, i, (i + 1).ToString(), false);
             AddNotationTextBlock(i, 0, letter.ToString(), true);
         }
     }
@@ -160,6 +191,7 @@ public partial class CheckersWindow : Window
         _sprites = new CheckerSprite[8, 8];
         _board = new CheckersBoard(8, 12);
         _gameEnd = false;
+        _selectedChecker = new Border();
         InitializeComponent();
         UpdateSprites();
         SetIndicatorText();
@@ -250,6 +282,7 @@ public partial class CheckersWindow : Window
         _sprites = new CheckerSprite[8, 8];
         _board = new CheckersBoard(8, 12);
         _gameEnd = false;
+        _selectedChecker = new Border();
         UpdateSprites();
         SetIndicatorText();
         UpdateButtons();

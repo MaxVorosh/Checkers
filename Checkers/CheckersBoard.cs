@@ -352,4 +352,19 @@ public class CheckersBoard
     {
         _result = newResult;
     }
+
+    public Tuple<int, int> GetTile(int xCoord, int yCoord)
+    {
+        return _board.GetTile(xCoord, yCoord);
+    }
+
+    public bool IsSelectedChecker()
+    {
+        return !_currentTile.Equals(new Tuple<int, int>(-1, -1));
+    }
+
+    public Tuple<int, int> GetSelectedTile()
+    {
+        return _currentTile;
+    }
 }
