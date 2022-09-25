@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Windows.Media.Media3D;
 
 namespace Checkers;
 
@@ -14,8 +16,9 @@ public class CheckersBoard
     private bool _isMoveStarted; // True, if checker capture something and can capture something else
     private Result _result; // Game status
     private Gameplay _gameplay;
+    private Mode _mode;
 
-    public CheckersBoard(int size, int cnt, Gameplay gameplay)
+    public CheckersBoard(int size, int cnt, Mode mode, Gameplay gameplay)
     {
         _size = size;
         _isWhiteTurn = (gameplay != Gameplay.PoolCheckers);
@@ -25,6 +28,7 @@ public class CheckersBoard
         _isMoveStarted = false; // Should player continue his turn if he already moved a checker
         _result = Result.NotEnd;
         _gameplay = gameplay;
+        _mode = mode;
     }
 
     private Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
@@ -67,14 +71,15 @@ public class CheckersBoard
             {
                 if (_board.GetChecker(currentTile).IsWhite() == currentChecker.IsWhite())
                     return false; // The same colored checker on the way - we can't move like this
-                
+
                 canTake++; // The other colored checker on the way - we must capture it
             }
-        } 
+        }
+
         // We can't eat more than one checker by checker's move
         if (mustCapture)
             return canTake == 1;
-        
+
         return canTake <= 1;
     }
 
@@ -107,7 +112,7 @@ public class CheckersBoard
             // Checker can't move one tile and capture something
             // Check that checkers can't move back. Last tile is empty, as we check earlier 
             return ((currentChecker.IsWhite() && tileTo.Item1 < tileFrom.Item1) ||
-                   (!currentChecker.IsWhite() && tileTo.Item1 > tileFrom.Item1)) && !mustCapture;
+                    (!currentChecker.IsWhite() && tileTo.Item1 > tileFrom.Item1)) && !mustCapture;
         }
 
         // We should capture a checker on the middle of our way
@@ -120,18 +125,18 @@ public class CheckersBoard
     private void Move(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
     {
         // Moves checker if it's possible, and delete captured checkers 
-        
+
         if (!CanMove(tileFrom, tileTo, false))
             return;
 
         _board.MoveChecker(tileFrom, tileTo); // Actually move the checker
-        
+
         var multipliers = GetMultipliers(tileFrom, tileTo); // Get direction
         int xMultiplier = multipliers.Item1;
         int yMultiplier = multipliers.Item2;
 
         int length = GetLength(tileFrom, tileTo);
-        
+
         for (int i = 1; i < length; ++i)
         {
             // Delete checkers on the way
@@ -159,9 +164,9 @@ public class CheckersBoard
         var multipliers = GetMultipliers(tileFrom, tileTo); // Get direction
         int xMultiplier = multipliers.Item1;
         int yMultiplier = multipliers.Item2;
-        
+
         int length = GetLength(tileFrom, tileTo);
-        
+
         for (int i = 1; i < length; ++i)
         {
             int currentX = tileFrom.Item1 + xMultiplier * i;
@@ -171,6 +176,7 @@ public class CheckersBoard
                 return true;
             }
         }
+
         return false;
     }
 
@@ -208,6 +214,7 @@ public class CheckersBoard
                     return true;
             }
         }
+
         return false;
     }
 
@@ -244,6 +251,7 @@ public class CheckersBoard
                 }
             }
         }
+
         return false;
     }
 
@@ -272,6 +280,7 @@ public class CheckersBoard
         {
             _result = Result.Draw;
         }
+
         if (_isWhiteTurn && !CanColorMove(_isWhiteTurn))
         {
             _result = _gameplay != Gameplay.Giveaway ? Result.BlackWin : Result.WhiteWin;
@@ -282,16 +291,16 @@ public class CheckersBoard
         }
     }
 
-    private void Turn(Tuple<int, int> tileTo)
+    private bool Turn(Tuple<int, int> tileTo)
     {
-        // Makes turn by 2 tiles - current and new
-        
+        // Makes turn by 2 tiles - current and new. Returns true, if the move was maked
+
         // If move is illegal (we can't move or we should move something else to capture), forget current tile
         if (!CanMove(_currentTile, tileTo, CanCaptureSmth(_isWhiteTurn)))
         {
             if (!_isMoveStarted)
                 RejectCurrentTile();
-            return;
+            return false;
         }
 
         _isMoveStarted = true;
@@ -305,14 +314,15 @@ public class CheckersBoard
 
         Move(_currentTile, tileTo);
         _currentTile = tileTo;
-        changeMissis = (!changeMissis) && _board.GetChecker(_currentTile).IsMissis(); // true if it's changed false->true
-        
+        changeMissis =
+            (!changeMissis) && _board.GetChecker(_currentTile).IsMissis(); // true if it's changed false->true
+
         // If checker captured something, we check, can it capture something else
         // If it is pool checker and 
         if (isCaptured && (_gameplay != Gameplay.PoolCheckers || !changeMissis))
         {
             if (CanCaptureColor(_currentTile))
-                return;
+                return true;
         }
 
         // When our turn is end
@@ -320,6 +330,7 @@ public class CheckersBoard
         _isMoveStarted = false;
         _isWhiteTurn = !_isWhiteTurn;
         UpdateResult();
+        return true;
     }
 
     private void NewTile(Tuple<int, int> tile)
@@ -334,7 +345,11 @@ public class CheckersBoard
         }
         else
         {
-            Turn(tile);
+            bool wasMoved = Turn(tile);
+            if (wasMoved && !_isMoveStarted && _mode == Mode.SinglePlayer)
+            {
+                MakeRandomComputerMove();
+            }
         }
     }
 
@@ -377,5 +392,82 @@ public class CheckersBoard
     {
         // True if tile should be with a border (selected checker can go to it)
         return IsSelectedChecker() && CanMove(_currentTile, tile, CanCaptureSmth(_isWhiteTurn));
+    }
+
+    public void MakeComputerMove(int depth)
+    {
+    }
+
+    public void MakeRandomComputerMove()
+    {
+        // Make random move, on the easiest difficult
+        
+        var checkersQueue = GetCheckersQueue();
+        checkersQueue = Shuffle(checkersQueue);
+        var multipliers = new List<Tuple<int, int>> // Possible directions of move
+        {
+            new Tuple<int, int>(1, 1), new Tuple<int, int>(1, -1), new Tuple<int, int>(-1, 1),
+            new Tuple<int, int>(-1, -1)
+        };
+        var range = new List<Tuple<int, int>>(); // Possible length of move
+        for (int i = 0; i < _size; ++i)
+        {
+            range.Add(new Tuple<int, int>(i, i));
+        }
+        foreach (var checkerPosition in checkersQueue)
+        {
+            multipliers = Shuffle(multipliers);
+            range = Shuffle(range);
+            foreach (var multiplier in multipliers)
+            {
+                foreach (var lentgh in range)
+                {
+                    _currentTile = checkerPosition;
+                    int xCoord = checkerPosition.Item1 + multiplier.Item1 * lentgh.Item1;
+                    int yCoord = checkerPosition.Item2 + multiplier.Item2 * lentgh.Item1;
+                    var tileTo = new Tuple<int, int>(xCoord, yCoord); // Random tile. Trying to make move there
+                    if (IsValidTile(tileTo) && ShouldLight(tileTo))
+                    {
+                        Turn(tileTo);
+                        if (_isMoveStarted) // If computer's turn is not over, we should make one more move
+                        {
+                            MakeRandomComputerMove();
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private List<Tuple<int, int>> GetCheckersQueue()
+    {
+        // Gets List of positions of checkers, that are same colored as person, whose turn
+        var checkersQueue = new List<Tuple<int, int>>();
+        for (int i = 0; i < 8; ++i)
+        {
+            for (int j = 0; j < 8; ++j)
+            {
+                Checker currentChecker = _board.GetChecker(new Tuple<int, int>(i, j));
+                if (currentChecker.IsExists() && _isWhiteTurn == currentChecker.IsWhite())
+                {
+                    checkersQueue.Add(new Tuple<int, int>(i, j));
+                }
+            }
+        }
+        return checkersQueue;
+    }
+
+    private List<Tuple<int, int>> Shuffle(List<Tuple<int, int>> list)
+    {
+        // Shuffle Tuples list. Called just on MakeRandomMove function
+        var rnd = new Random();
+        for (int i = 0; i < list.Count; ++i)
+        {
+            int pos = rnd.Next(i, list.Count);
+            (list[i], list[pos]) = (list[pos], list[i]);
+        }
+
+        return list;
     }
 }
