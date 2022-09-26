@@ -68,7 +68,7 @@ public partial class CheckersWindow : Window
         
         _selectedChecker = new Border();
         
-        if (!_board.IsSelectedChecker())
+        if (!_board.IsSelectedChecker() || _gameEnd)
             return;
 
         _selectedChecker.BorderBrush = new SolidColorBrush(Color.FromRgb(10, 69, 0));
@@ -225,7 +225,7 @@ public partial class CheckersWindow : Window
     private void SetDefaultParams()
     {
         _sprites = new CheckerSprite[8, 8];
-        _board = new CheckersBoard(8, 12, _gameMode, _gameplay);
+        _board = new CheckersBoard(8, 12, _gameMode, _gameDifficult, _gameplay);
         _gameEnd = false;
         _selectedChecker = new Border();
         _canMoveTiles = new List<Border>();

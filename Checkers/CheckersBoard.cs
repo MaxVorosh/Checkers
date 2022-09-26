@@ -11,24 +11,32 @@ public class CheckersBoard
     private readonly int _size; // count of board's rows and columns 
     private bool _isWhiteTurn;
     private int _rule15; // Count of missis's moves without captures
-    private readonly Board _board; // Checkers position
+    private Board _board; // Checkers position
     private Tuple<int, int> _currentTile; // Tile with a selected checker
     private bool _isMoveStarted; // True, if checker capture something and can capture something else
     private Result _result; // Game status
     private Gameplay _gameplay;
     private Mode _mode;
+    private Difficult _difficult;
+    private int _cntCheckersForOne;
 
-    public CheckersBoard(int size, int cnt, Mode mode, Gameplay gameplay)
+    public CheckersBoard(int size, int cnt, Mode mode, Difficult difficult, Gameplay gameplay)
     {
         _size = size;
         _isWhiteTurn = (gameplay != Gameplay.PoolCheckers);
         _rule15 = 0;
+        _cntCheckersForOne = cnt;
         _board = new Board(size, cnt);
         _currentTile = new Tuple<int, int>(-1, -1); // This value shows, that no checker is selected
         _isMoveStarted = false; // Should player continue his turn if he already moved a checker
         _result = Result.NotEnd;
         _gameplay = gameplay;
         _mode = mode;
+        _difficult = difficult;
+        if (!_isWhiteTurn && _mode == Mode.SinglePlayer)
+        {
+            MakeComputerMove();
+        }
     }
 
     private Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
@@ -348,7 +356,7 @@ public class CheckersBoard
             bool wasMoved = Turn(tile);
             if (wasMoved && !_isMoveStarted && _mode == Mode.SinglePlayer)
             {
-                MakeRandomComputerMove();
+                MakeComputerMove();
             }
         }
     }
@@ -394,26 +402,215 @@ public class CheckersBoard
         return IsSelectedChecker() && CanMove(_currentTile, tile, CanCaptureSmth(_isWhiteTurn));
     }
 
-    public void MakeComputerMove(int depth)
+    private bool ShouldIncreaseRule15(Board board)
     {
+        bool isMovedMissis = false;
+        int deltaCheckers = 0;
+        for (int i = 0; i < _size; ++i)
+        {
+            for (int j = 0; j < _size; ++j)
+            {
+                var lastChecker = _board.GetChecker(new Tuple<int, int>(i, j));
+                var newChecker = board.GetChecker(new Tuple<int, int>(i, j));
+                if (lastChecker.IsExists())
+                {
+                    if (lastChecker.IsWhite() != _isWhiteTurn)
+                        deltaCheckers++;
+
+                    if (!newChecker.IsExists())
+                        isMovedMissis = lastChecker.IsMissis();
+                }
+
+                if (newChecker.IsExists())
+                {
+                    if (newChecker.IsWhite() != _isWhiteTurn)
+                        deltaCheckers--;
+                }
+            }
+        }
+
+        return isMovedMissis && (deltaCheckers == 0);
     }
 
-    public void MakeRandomComputerMove()
+    private void MakeComputerMove()
+    {
+        if (_difficult == Difficult.Easy)
+        {
+            MakeRandomComputerMove();
+        }
+        else
+        {
+            int depth = 2;
+            if (_difficult == Difficult.Hard)
+            {
+                depth = 4;
+            }
+
+            var newPosition = MakeRealComputerMove(depth);
+            if (ShouldIncreaseRule15(newPosition.Item1))
+            {
+                _rule15++;
+            }
+            else
+            {
+                _rule15 = 0;
+            }
+
+            _isWhiteTurn = !_isWhiteTurn;
+            _board = newPosition.Item1.Copy();
+        }
+
+        UpdateResult();
+    }
+
+    private int EvaluatePosition(Board board)
+    {
+        // Evaluates position on the board depends on number of checkers. Regular costs 1 point, missis costs 3 points
+        if (_result == Result.Draw)
+            return 0;
+        if (_result == Result.BlackWin)
+            return -3 * _size * _size;
+        if (_result == Result.WhiteWin)
+            return 3 * _size * _size;
+
+        int myScore = 0;
+        int opponentScore = 0;
+        for (int i = 0; i < _size; ++i)
+        {
+            for (int j = 0; j < _size; ++j)
+            {
+                Checker checker = board.GetChecker(new Tuple<int, int>(i, j));
+                if (checker.IsExists())
+                {
+                    int add = 1;
+                    if (checker.IsMissis())
+                        add = 3;
+                    if (checker.IsWhite() && _gameplay != Gameplay.Giveaway)
+                        myScore += add;
+                    else
+                        opponentScore += add;
+                }
+            }
+        }
+
+        return myScore - opponentScore;
+    }
+
+    private Tuple<Board, int> MakeComputerCheckerMove(int depth, Tuple<int, int> tile)
+    {
+        if (_result != Result.NotEnd)
+        {
+            return new Tuple<Board, int>(_board, EvaluatePosition(_board));
+        }
+
+        int needEvaluate = 3 * _size * _size;
+        if (_isWhiteTurn)
+        {
+            needEvaluate = -3 * _size * _size;
+        }
+
+        var multipliers = GetAllMultipliers();
+        Board bestBoard = _board.Copy();
+        var board = _board.Copy();
+        for (int length = 0; length < _size; ++length)
+        {
+            foreach (var multiplier in multipliers)
+            {
+                int xCoord = tile.Item1 + length * multiplier.Item1;
+                int yCoord = tile.Item2 + length * multiplier.Item2;
+                var tileTo = new Tuple<int, int>(xCoord, yCoord);
+                if (!IsValidTile(tileTo))
+                    continue;
+
+                int currentRule15 = _rule15;
+                bool currentTurn = _isWhiteTurn;
+                _currentTile = tile;
+                bool fl = Turn(tileTo);
+                if (fl)
+                {
+                    Tuple<Board, int> moveResult;
+                    if (_isMoveStarted)
+                    {
+                        moveResult = MakeComputerCheckerMove(depth, tileTo);
+                    }
+                    else
+                    {
+                        moveResult = MakeRealComputerMove(depth - 1);
+                    }
+
+                    int eval = moveResult.Item2;
+                    if ((eval > needEvaluate) ^ _isWhiteTurn)
+                    {
+                        bestBoard = _board.Copy();
+                        needEvaluate = eval;
+                    }
+
+                    _board = board.Copy();
+                    _rule15 = currentRule15;
+                    _isWhiteTurn = currentTurn;
+                    _result = Result.NotEnd;
+                }
+            }
+        }
+
+        return new Tuple<Board, int>(bestBoard, needEvaluate);
+    }
+
+    private Tuple<Board, int> MakeRealComputerMove(int depth)
+    {
+        if (depth == 0)
+        {
+            return new Tuple<Board, int>(_board, EvaluatePosition(_board));
+        }
+
+        var bestBoard = _board;
+        int needEvaluate = 3 * _size * _size;
+        if (_isWhiteTurn)
+        {
+            needEvaluate = -3 * _size * _size;
+        }
+
+        
+        bool mustCapture = CanCaptureSmth(_isWhiteTurn);
+        for (int i = 0; i < _size; ++i)
+        {
+            for (int j = 0; j < _size; ++j)
+            {
+                var tile = new Tuple<int, int>(i, j);
+                Checker currentChecker = _board.GetChecker(tile);
+                if (!currentChecker.IsExists() || currentChecker.IsWhite() != _isWhiteTurn ||
+                    !CanCheckerMove(tile) || (!CanCaptureColor(tile) && mustCapture))
+                {
+                    continue;
+                }
+
+                var moveResult = MakeComputerCheckerMove(depth, new Tuple<int, int>(i, j));
+                Board newBoard = moveResult.Item1;
+                int eval = moveResult.Item2;
+                if ((eval > needEvaluate) ^ !_isWhiteTurn)
+                {
+                    bestBoard = newBoard.Copy();
+                    needEvaluate = eval;
+                }
+            }
+        }
+
+        return new Tuple<Board, int>(bestBoard, needEvaluate);
+    }
+
+    private void MakeRandomComputerMove()
     {
         // Make random move, on the easiest difficult
-        
+
         var checkersQueue = GetCheckersQueue();
         checkersQueue = Shuffle(checkersQueue);
-        var multipliers = new List<Tuple<int, int>> // Possible directions of move
-        {
-            new Tuple<int, int>(1, 1), new Tuple<int, int>(1, -1), new Tuple<int, int>(-1, 1),
-            new Tuple<int, int>(-1, -1)
-        };
+        var multipliers = GetAllMultipliers();
         var range = new List<Tuple<int, int>>(); // Possible length of move
         for (int i = 0; i < _size; ++i)
         {
             range.Add(new Tuple<int, int>(i, i));
         }
+
         foreach (var checkerPosition in checkersQueue)
         {
             multipliers = Shuffle(multipliers);
@@ -433,6 +630,7 @@ public class CheckersBoard
                         {
                             MakeRandomComputerMove();
                         }
+
                         return;
                     }
                 }
@@ -455,6 +653,7 @@ public class CheckersBoard
                 }
             }
         }
+
         return checkersQueue;
     }
 
@@ -469,5 +668,15 @@ public class CheckersBoard
         }
 
         return list;
+    }
+
+    private List<Tuple<int, int>> GetAllMultipliers()
+    {
+        var multipliers = new List<Tuple<int, int>> // Possible directions of move
+        {
+            new Tuple<int, int>(1, 1), new Tuple<int, int>(1, -1), new Tuple<int, int>(-1, 1),
+            new Tuple<int, int>(-1, -1)
+        };
+        return multipliers;
     }
 }

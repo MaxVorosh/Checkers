@@ -67,5 +67,17 @@ public class Board
         _checkers[tileTo.Item1, tileTo.Item2] = _checkers[tileFrom.Item1, tileFrom.Item2].Copy();
         _checkers[tileFrom.Item1, tileFrom.Item2].Delete();
     }
-    
+
+    public Board Copy()
+    {
+        var board = new Board(_size, _cntCheckersForOne);
+        for (int i = 0; i < _size; ++i)
+        {
+            for (int j = 0; j < _size; ++j)
+            {
+                board._checkers[i, j] = _checkers[i, j].Copy();
+            }
+        }
+        return board;
+    }
 }
