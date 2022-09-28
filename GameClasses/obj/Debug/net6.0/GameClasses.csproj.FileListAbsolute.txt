@@ -1,0 +1,15 @@
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.csproj.AssemblyReference.cache
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.AssemblyInfoInputs.cache
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.AssemblyInfo.cs
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.csproj.CoreCompileInputs.cache
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\bin\Debug\net6.0\GameClasses.exe
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\bin\Debug\net6.0\GameClasses.deps.json
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\bin\Debug\net6.0\GameClasses.runtimeconfig.json
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\bin\Debug\net6.0\GameClasses.dll
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\bin\Debug\net6.0\GameClasses.pdb
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.dll
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\refint\GameClasses.dll
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.pdb
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\GameClasses.genruntimeconfig.cache
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\GameClasses\obj\Debug\net6.0\ref\GameClasses.dll

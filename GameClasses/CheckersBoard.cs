@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Windows.Media.Media3D;
-
-namespace Checkers;
+namespace GameClasses;
 
 public class CheckersBoard
 {

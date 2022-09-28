@@ -21,3 +21,9 @@ C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы програ
 C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\obj\Debug\net6.0-windows\ref\Checkers.dll
 C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\obj\Debug\net6.0-windows\CheckersWindow.g.cs
 C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\obj\Debug\net6.0-windows\CheckersWindow.baml
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\bin\Debug\net6.0-windows\GameClasses.deps.json
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\bin\Debug\net6.0-windows\GameClasses.runtimeconfig.json
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\bin\Debug\net6.0-windows\GameClasses.exe
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\bin\Debug\net6.0-windows\GameClasses.dll
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\bin\Debug\net6.0-windows\GameClasses.pdb
+C:\Users\mavor\OneDrive\Рабочий стол\ВУЗ\Основы программирования\Checkers\Checkers\obj\Debug\net6.0-windows\Checkers.csproj.CopyComplete

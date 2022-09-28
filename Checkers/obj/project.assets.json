@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {}
+    "net6.0-windows7.0": {
+      "GameClasses/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/GameClasses.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GameClasses.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "GameClasses/1.0.0": {
+      "type": "project",
+      "path": "../GameClasses/GameClasses.csproj",
+      "msbuildProject": "../GameClasses/GameClasses.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": []
+    "net6.0-windows7.0": [
+      "GameClasses >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\mavor\\.nuget\\packages\\": {}
@@ -33,7 +52,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\mavor\\OneDrive\\Рабочий стол\\ВУЗ\\Основы программирования\\Checkers\\GameClasses\\GameClasses.csproj": {
+              "projectPath": "C:\\Users\\mavor\\OneDrive\\Рабочий стол\\ВУЗ\\Основы программирования\\Checkers\\GameClasses\\GameClasses.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 
-
-namespace Checkers;
+namespace GameClasses;
 
 public class Board
 {
@@ -79,5 +78,9 @@ public class Board
             }
         }
         return board;
+    }
+    
+    public static void Main(string[] args)
+    {
     }
 }

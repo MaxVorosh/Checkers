@@ -1,4 +1,4 @@
-namespace Checkers;
+namespace GameClasses;
 
 public enum Gameplay
 {

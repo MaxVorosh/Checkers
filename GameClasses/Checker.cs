@@ -1,4 +1,5 @@
-namespace Checkers;
+namespace GameClasses;
+
 
 public class Checker
 {

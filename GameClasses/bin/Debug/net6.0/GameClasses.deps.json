@@ -6,14 +6,6 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Checkers/1.0.0": {
-        "dependencies": {
-          "GameClasses": "1.0.0"
-        },
-        "runtime": {
-          "Checkers.dll": {}
-        }
-      },
       "GameClasses/1.0.0": {
         "runtime": {
           "GameClasses.dll": {}
@@ -22,11 +14,6 @@
     }
   },
   "libraries": {
-    "Checkers/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "GameClasses/1.0.0": {
       "type": "project",
       "serviceable": false,
