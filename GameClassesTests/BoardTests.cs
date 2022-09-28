@@ -3,7 +3,7 @@ using static NUnit.Framework.Assert;
 
 namespace GameClassesTests;
 
-public class Tests
+public class BoardTests
 {
     [SetUp]
     public void Setup()

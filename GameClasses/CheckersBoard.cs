@@ -6,7 +6,7 @@ public class CheckersBoard
 
     private readonly int _size; // count of board's rows and columns 
     private bool _isWhiteTurn;
-    private int _rule15; // Count of missis's moves without captures
+    public int Rule15; // Count of missis's moves without captures
     private Board _board; // Checkers position
     private Tuple<int, int> _currentTile; // Tile with a selected checker
     private bool _isMoveStarted; // True, if checker capture something and can capture something else
@@ -20,7 +20,7 @@ public class CheckersBoard
     {
         _size = size;
         _isWhiteTurn = (gameplay != Gameplay.PoolCheckers);
-        _rule15 = 0;
+        Rule15 = 0;
         _cntCheckersForOne = cnt;
         _board = new Board(size, cnt);
         _currentTile = new Tuple<int, int>(-1, -1); // This value shows, that no checker is selected
@@ -35,7 +35,7 @@ public class CheckersBoard
         }
     }
 
-    private Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
+    public Tuple<int, int> GetMultipliers(Tuple<int, int> from, Tuple<int, int> to)
     {
         // Returns direction, in which checker should go from start tile to last
         // E.g. (1, -1) - checker should go to axis X and facing axis Y
@@ -45,7 +45,7 @@ public class CheckersBoard
         return new Tuple<int, int>(xMultiplier, yMultiplier);
     }
 
-    private int GetLength(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
+    public int GetLength(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
     {
         // How many tiles should checker go (tiles are on the one diagonal)
         return Math.Abs(tileFrom.Item1 - tileTo.Item1);
@@ -87,7 +87,7 @@ public class CheckersBoard
         return canTake <= 1;
     }
 
-    private bool CanMove(Tuple<int, int> tileFrom, Tuple<int, int> tileTo, bool mustCapture)
+    public bool CanMove(Tuple<int, int> tileFrom, Tuple<int, int> tileTo, bool mustCapture)
     {
         // Can checker move from start tile to last. If mustCapture is true, than checker should capture something
 
@@ -126,7 +126,7 @@ public class CheckersBoard
                _board.GetChecker(middleTile).IsWhite() != currentChecker.IsWhite();
     }
 
-    private void Move(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
+    public void Move(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
     {
         // Moves checker if it's possible, and delete captured checkers 
 
@@ -158,9 +158,8 @@ public class CheckersBoard
         }
     }
 
-    private bool CanCaptureTile(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
+    public bool CanCaptureTile(Tuple<int, int> tileFrom, Tuple<int, int> tileTo)
     {
-        //??
         // Is checker capture something on the way it goes
         if (!CanMove(tileFrom, tileTo, false))
             return false;
@@ -189,7 +188,7 @@ public class CheckersBoard
         _currentTile = new Tuple<int, int>(-1, -1);
     }
 
-    private bool IsValidTile(Tuple<int, int> tile)
+    public bool IsValidTile(Tuple<int, int> tile)
     {
         // Check is tile's coordinates in range
         return (0 <= tile.Item1 && 0 <= tile.Item2 && tile.Item1 < _size && tile.Item2 < _size);
@@ -206,7 +205,7 @@ public class CheckersBoard
         return moves;
     }
 
-    private bool CanCaptureColor(Tuple<int, int> tile)
+    public bool CanCaptureColor(Tuple<int, int> tile)
     {
         // Can this checker make move, that capture something
         for (int i = 2; i <= _size; ++i)
@@ -222,7 +221,7 @@ public class CheckersBoard
         return false;
     }
 
-    private bool CanCaptureSmth(bool color)
+    public bool CanCaptureSmth(bool color)
     {
         // Can someone checker of this color make move, that capture something
         for (int i = 0; i < _size; ++i)
@@ -241,7 +240,7 @@ public class CheckersBoard
         return false;
     }
 
-    private bool CanCheckerMove(Tuple<int, int> tile)
+    public bool CanCheckerMove(Tuple<int, int> tile)
     {
         // Can checker move somewhere
         for (int i = 1; i <= _size; ++i)
@@ -259,7 +258,7 @@ public class CheckersBoard
         return false;
     }
 
-    private bool CanColorMove(bool isWhite)
+    public bool CanColorMove(bool isWhite)
     {
         // Can someone checker of this color move somewhere
         bool canMove = false;
@@ -278,9 +277,9 @@ public class CheckersBoard
         return canMove;
     }
 
-    private void UpdateResult()
+    public void UpdateResult()
     {
-        if (_rule15 == 30)
+        if (Rule15 == 30)
         {
             _result = Result.Draw;
         }
@@ -295,7 +294,7 @@ public class CheckersBoard
         }
     }
 
-    private bool Turn(Tuple<int, int> tileTo)
+    public bool Turn(Tuple<int, int> tileTo)
     {
         // Makes turn by 2 tiles - current and new. Returns true, if the move was maked
 
@@ -312,9 +311,9 @@ public class CheckersBoard
         bool isCaptured = CanCaptureTile(_currentTile, tileTo); // When checker moves, was it captured something
 
         if (_board.GetChecker(_currentTile).IsMissis() && !isCaptured)
-            _rule15++;
+            Rule15++;
         else
-            _rule15 = 0;
+            Rule15 = 0;
 
         Move(_currentTile, tileTo);
         _currentTile = tileTo;
@@ -337,7 +336,7 @@ public class CheckersBoard
         return true;
     }
 
-    private void NewTile(Tuple<int, int> tile)
+    public void NewTile(Tuple<int, int> tile)
     {
         // Gets a new tile. Remember it or make turn
         if (_currentTile.Equals(new Tuple<int, int>(-1, -1)))
@@ -398,7 +397,7 @@ public class CheckersBoard
         return IsSelectedChecker() && CanMove(_currentTile, tile, CanCaptureSmth(_isWhiteTurn));
     }
 
-    private bool ShouldIncreaseRule15(Board board)
+    public bool ShouldIncreaseRule15(Board board)
     {
         // If we move missis and not capture any checker, we should increase rule15. This function check it
         bool isMovedMissis = false; // Becomes true if there was missis on the old version of board, not new version
@@ -446,11 +445,11 @@ public class CheckersBoard
             var newPosition = MakeRealComputerMove(depth);
             if (ShouldIncreaseRule15(newPosition.Item1))
             {
-                _rule15++;
+                Rule15++;
             }
             else
             {
-                _rule15 = 0;
+                Rule15 = 0;
             }
 
             _isWhiteTurn = !_isWhiteTurn;
@@ -460,7 +459,7 @@ public class CheckersBoard
         UpdateResult();
     }
 
-    private int EvaluatePosition(Board board)
+    public int EvaluatePosition(Board board)
     {
         // Evaluates position on the board depends on number of checkers. Regular costs 1 point, missis costs 3 points
         // Returns white score - black score
@@ -493,7 +492,7 @@ public class CheckersBoard
         return myScore - opponentScore;
     }
 
-    private Tuple<Board, int> MakeComputerCheckerMove(int depth, Tuple<int, int> tile)
+    public Tuple<Board, int> MakeComputerCheckerMove(int depth, Tuple<int, int> tile)
     {
         // Makes all possible move by checker and chooses the best one. Depth - How many moves program will simulate
         if (_result != Result.NotEnd)
@@ -516,7 +515,7 @@ public class CheckersBoard
                 if (!IsValidTile(tileTo))
                     continue;
                 // Current parameters of position
-                int currentRule15 = _rule15;
+                int currentRule15 = Rule15;
                 bool currentTurn = _isWhiteTurn;
                 _currentTile = tile;
                 bool fl = Turn(tileTo); // Try make turn
@@ -548,7 +547,7 @@ public class CheckersBoard
                     }
                     // Set old values
                     _board = board.Copy();
-                    _rule15 = currentRule15;
+                    Rule15 = currentRule15;
                     _isWhiteTurn = currentTurn;
                     _result = Result.NotEnd;
                 }
@@ -557,7 +556,7 @@ public class CheckersBoard
         return new Tuple<Board, int>(bestBoard, needEvaluate);
     }
 
-    private Tuple<Board, int> MakeRealComputerMove(int depth)
+    public Tuple<Board, int> MakeRealComputerMove(int depth)
     {
         // Make all possible moves and choose the best one
         if (depth == 0)
@@ -595,7 +594,7 @@ public class CheckersBoard
         return new Tuple<Board, int>(bestBoard, needEvaluate);
     }
 
-    private void MakeRandomComputerMove()
+    public void MakeRandomComputerMove()
     {
         // Make random move, on the easiest difficult
 
@@ -675,5 +674,11 @@ public class CheckersBoard
             new Tuple<int, int>(-1, -1)
         };
         return multipliers;
+    }
+
+    public void DeleteChecker(Tuple<int, int> tile)
+    {
+        // Deletes checker from tile. Needs for testing
+        _board.DeleteChecker(tile);
     }
 }

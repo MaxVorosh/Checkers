@@ -5,19 +5,19 @@ public class Checker
 {
     // Class, that stores information about every checker
     
-    private readonly bool _white;
+    public bool White;
     private bool _missis, _exists;
 
     public Checker(bool isWhite, bool isMissis, bool isExists = false)
     {
-        _white = isWhite; // is checker white
+        White = isWhite; // is checker white
         _missis = isMissis; // is checker missis
         _exists = isExists; // is checker exists
     }
 
     public bool IsWhite()
     {
-        return _white;
+        return White;
     }
 
     public bool IsMissis()
@@ -37,7 +37,7 @@ public class Checker
 
     public Checker Copy()
     {
-        return new Checker(_white, _missis, _exists);
+        return new Checker(White, _missis, _exists);
     }
 
     public void BecomeMissis()
