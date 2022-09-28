@@ -326,7 +326,7 @@ public class CheckersBoard
             (!changeMissis) && _board.GetChecker(_currentTile).IsMissis(); // true if it's changed false->true
 
         // If checker captured something, we check, can it capture something else
-        // If it is pool checker and 
+        // If it is pool checker and checker becomes missis, we should end turn
         if (isCaptured && (_gameplay != Gameplay.PoolCheckers || !changeMissis))
         {
             if (CanCaptureColor(_currentTile))
@@ -503,9 +503,9 @@ public class CheckersBoard
         if (_result != Result.NotEnd)
             return new Tuple<Board, int>(_board, EvaluatePosition(_board)); // If game ends, we shouldn't look deeper
         
-        int needEvaluate = 3 * _size * _size; // Best evaluate
+        int needEvaluate = 3 * _size * _size + 3; // Best evaluate
         if (_isWhiteTurn)
-            needEvaluate = -3 * _size * _size;
+            needEvaluate = -3 * _size * _size - 3;
 
         var multipliers = GetAllMultipliers();
         Board bestBoard = _board.Copy(); // Best position after next move
@@ -527,15 +527,27 @@ public class CheckersBoard
                 if (fl)
                 {
                     Tuple<Board, int> moveResult;
+                    bool shouldResetBoard = !_isMoveStarted; // False if there's more than one moves in the turn
                     if (_isMoveStarted) // If checker can capture something else, we continue our turn
                         moveResult = MakeComputerCheckerMove(depth, tileTo); 
                     else // Else we should look all possible moves for other player
                         moveResult = MakeRealComputerMove(depth - 1);
-                    
                     int eval = moveResult.Item2;
+                    if (tile.Equals(new Tuple<int, int>(7, 6)))
+                    {
+                    }
+
                     if ((eval > needEvaluate) ^ !currentTurn)
                     {
-                        bestBoard = _board.Copy();
+                        if (shouldResetBoard)
+                        {
+                            bestBoard = _board.Copy();
+                        }
+                        else
+                        {
+                            bestBoard = moveResult.Item1.Copy();
+                        }
+
                         needEvaluate = eval;
                     }
                     // Set old values
@@ -556,10 +568,10 @@ public class CheckersBoard
             return new Tuple<Board, int>(_board, EvaluatePosition(_board));
 
         var bestBoard = _board; // Best position after next move
-        int needEvaluate = 3 * _size * _size; // Best evaluate after next move. Min for black, max for white
+        int needEvaluate = 3 * _size * _size + 3; // Best evaluate after next move. Min for black, max for white
         if (_isWhiteTurn)
         {
-            needEvaluate = -3 * _size * _size;
+            needEvaluate = -3 * _size * _size - 3;
         }
         bool mustCapture = CanCaptureSmth(_isWhiteTurn);
         for (int i = 0; i < _size; ++i)
@@ -571,6 +583,7 @@ public class CheckersBoard
                 if (!currentChecker.IsExists() || currentChecker.IsWhite() != _isWhiteTurn ||
                     !CanCheckerMove(tile) || (!CanCaptureColor(tile) && mustCapture))  
                 {
+
                     continue; // We can't move this checker if it's not exist, bad color, can't move or must capture, but can't
                 }
                 var moveResult = MakeComputerCheckerMove(depth, new Tuple<int, int>(i, j));
