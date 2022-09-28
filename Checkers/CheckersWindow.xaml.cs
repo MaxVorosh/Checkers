@@ -34,7 +34,7 @@ public partial class CheckersWindow : Window
         p = GameWindow.TranslatePoint(p, BoardBorder);
         var x = Convert.ToInt32(p.X - 2);
         var y = Convert.ToInt32(p.Y - 2);
-        if (x < 0 || y < 0 || x > 400 || y > 400)
+        if (x < 0 || y < 0 || x >= 400 || y >= 400)
             return;
 
         // Give coords to the board

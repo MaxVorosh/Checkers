@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checkers", "Checkers\Checke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClasses", "GameClasses\GameClasses.csproj", "{8C58134F-A0AD-468C-AB8A-2541D6391D65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClassesTests", "GameClassesTests\GameClassesTests.csproj", "{32F6A107-544D-44F1-961F-E17E2405BB7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{8C58134F-A0AD-468C-AB8A-2541D6391D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C58134F-A0AD-468C-AB8A-2541D6391D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C58134F-A0AD-468C-AB8A-2541D6391D65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32F6A107-544D-44F1-961F-E17E2405BB7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32F6A107-544D-44F1-961F-E17E2405BB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32F6A107-544D-44F1-961F-E17E2405BB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32F6A107-544D-44F1-961F-E17E2405BB7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
