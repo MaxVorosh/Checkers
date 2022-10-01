@@ -316,6 +316,8 @@ public partial class CheckersWindow : Window
             _board.SetResult(Result.WhiteWin);
         }
         SetIndicatorText();
+        UpdateSelectedLighting(0, 0);
+        UpdateCanMoveLighting();
         ChangeButtonsAfterGame();
     }
 
@@ -325,6 +327,8 @@ public partial class CheckersWindow : Window
         if (WhiteDraw.IsChecked == true && BlackDraw.IsChecked == true)
         {
             _board.SetResult(Result.Draw);
+            UpdateSelectedLighting(0, 0);
+            UpdateCanMoveLighting();
             SetIndicatorText();
             ChangeButtonsAfterGame();
         }

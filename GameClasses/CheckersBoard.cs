@@ -383,6 +383,10 @@ public class CheckersBoard
     public void SetResult(Result newResult)
     {
         _result = newResult;
+        if (newResult != Result.NotEnd)
+        {
+            RejectCurrentTile();
+        }
     }
 
     public Tuple<int, int> GetTile(int xCoord, int yCoord)
