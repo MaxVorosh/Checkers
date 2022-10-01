@@ -217,9 +217,9 @@ public partial class CheckersWindow : Window
     {
         for (int i = 0; i < 8; ++i)
         {
-            Char letter = Convert.ToChar('a' + 7 - i);
-            AddNotationTextBlock(7, i, (i + 1).ToString(), false);
-            AddNotationTextBlock(i, 0, letter.ToString(), true);
+            Char letter = Convert.ToChar('a' + i);
+            AddNotationTextBlock(7, i, letter.ToString(), false);
+            AddNotationTextBlock(i, 0, (8 - i).ToString(), true);
         }
     }
 
@@ -288,7 +288,15 @@ public partial class CheckersWindow : Window
         // Hide and show "Resign" and "Draw" buttons
         if (_board.IsWhiteTurn)
         {
-            WhiteDraw.Visibility = Visibility.Visible;
+            if (_gameMode == Mode.Multiplayer)
+            {
+                WhiteDraw.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                WhiteDraw.Visibility = Visibility.Hidden;
+            }
+
             WhiteResign.Visibility = Visibility.Visible;
             BlackDraw.Visibility = Visibility.Hidden;
             BlackResign.Visibility = Visibility.Hidden;
