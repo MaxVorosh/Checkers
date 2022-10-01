@@ -3,8 +3,13 @@ namespace GameClasses;
 
 public class Checker
 {
-    // Class, that stores information about every checker
-    
+    /// <summary>
+    /// Class, that stores information about every checker
+    /// Method BecomeMissis makes this checker missis
+    /// Method Delete makes checker non-exists
+    /// Other methods gives information about checker
+    /// </summary>
+
     public bool White;
     private bool _missis, _exists;
 

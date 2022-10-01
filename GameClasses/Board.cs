@@ -4,8 +4,11 @@ namespace GameClasses;
 
 public class Board
 {
-    // Class, that responsible for actual movement of checkers
-    
+    /// <summary>
+    /// Class, that responsible for actual movement of checkers
+    /// Includes methods, that gets checker by board-coords and board-coords by window-coords
+    /// </summary>
+
     private readonly int _size; // Count rows and columns at the board
     private readonly int _tileSize; // size of every tile in pixels
     private readonly Checker[,] _checkers; // Array of position of checkers

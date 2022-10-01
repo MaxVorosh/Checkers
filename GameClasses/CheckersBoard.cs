@@ -2,7 +2,16 @@ namespace GameClasses;
 
 public class CheckersBoard
 {
-    // Class, that responsible for compliance game rules
+    /// <summary>
+    /// Class, that responsible for compliance game rules
+    /// Gets window-coords in method NewCoords. Than converts them to board-coords and give it to NewTile method
+    /// If there is a earlier selected checker, makes turn in Turn method
+    /// Turn - check possibility to move (CanMove method), move (Move method) and update params
+    /// MakeComputerMove - makes computer move is single payer game.
+    /// MakeRandomComputerMove in easy level
+    /// MakeRealComputerMove in medium and hard level 
+    /// Other methods support those methods and used to check of possibility of movement
+    /// </summary>
 
     private readonly int _size; // count of board's rows and columns 
     private bool _isWhiteTurn;

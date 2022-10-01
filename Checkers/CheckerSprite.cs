@@ -5,7 +5,9 @@ namespace Checkers;
 
 public class CheckerSprite
 {
-    // Ellipsis, that shows checkers on the board
+    /// <summary>
+    /// Ellipsis, that shows checkers on the board. Used in CheckersWindow
+    /// </summary>
     public Ellipse MainShape; // Ellipse for all checkers
     public Ellipse MissisShape; // Ellipse, that shows, that this checker is missis
 

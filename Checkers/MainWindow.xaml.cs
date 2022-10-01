@@ -17,7 +17,10 @@ using Style = GameClasses.Style;
 
 namespace Checkers
 {
-    // Game parameter selection window
+    /// <summary>
+    /// Game parameter selection window
+    /// Processes change game parameters. Give this parameters to CheckersWindow
+    /// </summary>
 
     public partial class MainWindow : Window
     {

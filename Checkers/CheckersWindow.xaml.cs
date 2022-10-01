@@ -13,7 +13,12 @@ namespace Checkers;
 
 public partial class CheckersWindow : Window
 {
-    // Window, that shows game
+    /// <summary>
+    /// Window, that shows game
+    /// Includes board, that responsible for checkers movement, game description and visual objects
+    /// Can process clicks on board with BoardClick method
+    /// Other methods support this method and updates different visual objects
+    /// </summary>
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;

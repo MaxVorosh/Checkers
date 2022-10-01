@@ -2,7 +2,9 @@ namespace GameClasses;
 
 public enum Result
 {
-    // Possible game status
+    /// <summary>
+    /// Possible game status
+    /// </summary>
     WhiteWin,
     Draw,
     BlackWin,
