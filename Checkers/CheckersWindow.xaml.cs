@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GameClasses;
+using Style = GameClasses.Style;
 
 namespace Checkers;
 
@@ -16,11 +17,16 @@ public partial class CheckersWindow : Window
     private Mode _gameMode;
     private Difficult _gameDifficult;
     private Gameplay _gameplay;
+    private Style _gameStyle;
     private CheckerSprite?[,] _sprites; // Checkers images, that consists of ellipses
     private CheckersBoard _board; // Board, that responsible for business-logic
     private Border _selectedChecker; // Border around selected checker
     private List<Border> _canMoveTiles;
     private bool _gameEnd;
+    private SolidColorBrush whiteColor;
+    private SolidColorBrush blackColor;
+    private SolidColorBrush selectedColor;
+    private SolidColorBrush canMoveColor;
 
     private void BoardClick(object sender, MouseButtonEventArgs e)
     {
@@ -72,7 +78,7 @@ public partial class CheckersWindow : Window
         if (!_board.IsSelectedChecker() || _gameEnd)
             return;
 
-        _selectedChecker.BorderBrush = new SolidColorBrush(Color.FromRgb(10, 69, 0));
+        _selectedChecker.BorderBrush = selectedColor;
         _selectedChecker.BorderThickness = new Thickness(3);
         Board.Children.Add(_selectedChecker);
         Grid.SetColumn(_selectedChecker, tile.Item2);
@@ -111,7 +117,7 @@ public partial class CheckersWindow : Window
     private Border GetCanMoveLighting()
     {
         var border = new Border();
-        border.BorderBrush = new SolidColorBrush(Color.FromRgb(124, 252, 0));
+        border.BorderBrush = canMoveColor;
         border.BorderThickness = new Thickness(2);
         return border;
     }
@@ -235,12 +241,59 @@ public partial class CheckersWindow : Window
         UpdateButtons();
     }
 
-    public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay)
+    private void SetColors()
+    {
+        if (_gameStyle == GameClasses.Style.GreenStyle)
+        {
+            blackColor = new SolidColorBrush(Color.FromRgb(118, 150, 86));
+            whiteColor = new SolidColorBrush(Color.FromRgb(238, 238, 210));
+            selectedColor = new SolidColorBrush(Color.FromRgb(10, 69, 0));
+            canMoveColor = new SolidColorBrush(Color.FromRgb(124, 252, 0));
+        }
+        else if (_gameStyle == GameClasses.Style.BlueStyle)
+        {
+            blackColor = new SolidColorBrush(Color.FromRgb(137, 154, 162));
+            whiteColor = new SolidColorBrush(Color.FromRgb(254, 254, 252));
+            selectedColor = new SolidColorBrush(Color.FromRgb(63, 73, 160));
+            canMoveColor = new SolidColorBrush(Color.FromRgb(110, 227, 255));
+        }
+        else
+        {
+            blackColor = new SolidColorBrush(Color.FromRgb(181, 110, 68));
+            whiteColor = new SolidColorBrush(Color.FromRgb(237, 212, 171));
+            selectedColor = new SolidColorBrush(Color.FromRgb(92, 58, 0));
+            canMoveColor = new SolidColorBrush(Color.FromRgb(97, 0, 0));
+        }
+    }
+
+    public void SetGrid()
+    {
+        BoardBorder.Background = whiteColor;
+        for (int i = 0; i < 8; ++i)
+        {
+            for (int j = 0; j < 8; ++j)
+            {
+                if ((i + j) % 2 == 1)
+                {
+                    var tile = new Border();
+                    tile.Background = blackColor;
+                    Board.Children.Add(tile);
+                    Grid.SetColumn(tile, i);
+                    Grid.SetRow(tile, j);
+                }
+            }
+        }
+    }
+
+    public CheckersWindow(Mode mode, Difficult difficult, Gameplay gameplay, Style style)
     {
         _gameMode = mode;
         _gameDifficult = difficult;
         _gameplay = gameplay;
+        _gameStyle = style;
         InitializeComponent();
+        SetColors();
+        SetGrid();
         SetDefaultParams();
         DrawNotation();
     }

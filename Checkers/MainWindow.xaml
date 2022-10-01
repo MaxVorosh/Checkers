@@ -8,15 +8,16 @@
         Title="Checkers" Height="200" Width="400" ResizeMode="NoResize">
     <Grid x:Name="MainGrid" Background="Azure">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="0.4*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="1" Grid.Column="1" Content="Start" FontSize="22" Width="75" Height="50" Click="ButtonClick" />
+        <Button Grid.Row="2" Grid.Column="1" Content="Start" FontSize="22" Width="75" Height="50" Click="ButtonClick" />
         <StackPanel Grid.Row="0" Grid.Column="1" x:Name="DifficultStackPanel">
             <RadioButton GroupName="Difficult" Content="Easy" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Difficult" Content="Medium" Checked="RadioButtonChecked" />
@@ -30,6 +31,11 @@
             <RadioButton GroupName="Gameplay" Content="Russian" IsChecked="True" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Gameplay" Content="Giveaway" Checked="RadioButtonChecked" />
             <RadioButton GroupName="Gameplay" Content="Pool checkers" Checked="RadioButtonChecked" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="Styles" Orientation="Horizontal" HorizontalAlignment="Center">
+            <RadioButton GroupName="Styles" MinWidth="90" Content="Green Style" IsChecked="True" Checked="RadioButtonChecked"/>
+            <RadioButton GroupName="Styles" MinWidth="90" Content="Brown Style" Checked="RadioButtonChecked"/>
+            <RadioButton GroupName="Styles" MinWidth="90" Content="Blue Style" Checked="RadioButtonChecked"/>
         </StackPanel>
     </Grid>
 </Window>

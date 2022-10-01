@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GameClasses;
+using Style = GameClasses.Style;
 
 namespace Checkers
 {
@@ -23,6 +24,7 @@ namespace Checkers
         private Mode _selectedMode;
         private Difficult _selectedDifficult;
         private Gameplay _selectedGameplay;
+        private Style _selectedStyle;
 
         public MainWindow()
         {
@@ -32,7 +34,7 @@ namespace Checkers
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             // Function, that starts the game after button click
-            var checkersWindow = new CheckersWindow(_selectedMode, _selectedDifficult, _selectedGameplay);
+            var checkersWindow = new CheckersWindow(_selectedMode, _selectedDifficult, _selectedGameplay, _selectedStyle);
             checkersWindow.Show();
             this.Close();
         }
@@ -40,6 +42,16 @@ namespace Checkers
         private void ChangeDifficult(string newDifficult)
         {
             _selectedDifficult = (Difficult)Enum.Parse(typeof(Difficult), newDifficult);
+        }
+
+        private void ChangeStyle(string newStyle)
+        {
+            _selectedStyle = newStyle switch
+            {
+                "Green Style" => GameClasses.Style.GreenStyle,
+                "Brown Style" => GameClasses.Style.BrownStyle,
+                _ => GameClasses.Style.BlueStyle
+            };
         }
 
         private void ChangeGameplay(string newGameplay)
@@ -79,6 +91,9 @@ namespace Checkers
                     break;
                 case "Gameplay":
                     ChangeGameplay(pressed.Content.ToString());
+                    break;
+                case "Styles":
+                    ChangeStyle(pressed.Content.ToString());
                     break;
                 default:
                     ChangeMode(pressed.Content.ToString());
